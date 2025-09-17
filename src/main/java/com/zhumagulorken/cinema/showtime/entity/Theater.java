@@ -12,9 +12,24 @@ public class Theater {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "location")
     private String location;
+
+    @OneToMany(mappedBy ="theater", cascade = CascadeType.ALL)
+    private List<Hall> halls = new ArrayList<>();
+
+    // Getter and Setter
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -32,4 +47,11 @@ public class Theater {
         this.location = location;
     }
 
+    public List<Hall> getHalls() {
+        return halls;
+    }
+
+    public void setHalls(List<Hall> halls) {
+        this.halls = halls;
+    }
 }
