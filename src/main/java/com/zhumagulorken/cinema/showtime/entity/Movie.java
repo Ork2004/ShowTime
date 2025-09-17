@@ -26,6 +26,9 @@ public class Movie {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Show> shows =  new ArrayList<>();
+
     // Getter and Setter
 
     public int getId() {
@@ -66,5 +69,13 @@ public class Movie {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public List<Show> getShows() {
+        return shows;
+    }
+
+    public void setShows(List<Show> shows) {
+        this.shows = shows;
     }
 }
