@@ -22,6 +22,9 @@ public class Hall {
     @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
     private List<Seat> seats = new ArrayList<>();
 
+    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
+    private List<Show> shows = new ArrayList<>();
+
     //Getter and Setter
 
     public int getId() {
@@ -54,5 +57,13 @@ public class Hall {
 
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
+    }
+
+    public List<Show> getShows() {
+        return shows;
+    }
+
+    public void setShows(List<Show> shows) {
+        this.shows = shows;
     }
 }
