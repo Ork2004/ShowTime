@@ -8,33 +8,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/seats")
+@RequestMapping("/theaters/{theaterId}/halls/{hallId}/seats")
 public class SeatController {
-    private final SeatService service;
+    private final SeatService seatService;
 
-    public SeatController(SeatService service) {
-        this.service = service;
+    public SeatController(SeatService seatService) {
+        this.seatService = seatService;
     }
 
     @GetMapping
-    public List<Seat> getAll() {
-        return service.getAll();
-    }
-
-    @PostMapping
-    public Seat create(@RequestBody Seat seat) {
-        return service.create(seat);
+    public List<Seat> getSeats(@PathVariable Long hallId) {
+        return seatService.getSeatsByHall(hallId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Seat> getById(@PathVariable Long id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Seat getSeat(@PathVariable Long hallId, @PathVariable Long id) {
+        return seatService.getSeatByIdAndHall(hallId, id);
+    }
+
+    @PostMapping
+    public Seat createSeat(@PathVariable Long hallId, @RequestBody Seat seat) {
+        return seatService.createSeat(hallId, seat);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public void delete(@PathVariable Long hallId, @PathVariable Long id) {
+        seatService.deleteSeat(hallId, id);
     }
 }
