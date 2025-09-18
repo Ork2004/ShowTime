@@ -8,33 +8,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/halls")
+@RequestMapping("/theaters/{theaterId}/halls")
 public class HallController {
-    private final HallService service;
+    private final HallService hallService;
 
-    public HallController(HallService service) {
-        this.service = service;
+    public HallController(HallService hallService) {
+        this.hallService = hallService;
     }
 
     @GetMapping
-    public List<Hall> getAll() {
-        return service.getAll();
-    }
-
-    @PostMapping
-    public Hall create(@RequestBody Hall hall) {
-        return service.create(hall);
+    public List<Hall> getHalls(@PathVariable Long theaterId) {
+        return hallService.getHallsByTheater(theaterId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hall> getById(@PathVariable Long id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Hall getHall(@PathVariable Long theaterId, @PathVariable Long id) {
+        return hallService.getHallByIdAndTheater(theaterId, id);
+    }
+
+    @PostMapping
+    public Hall createHall(@PathVariable Long theaterId, @RequestBody Hall hall) {
+        return hallService.createHall(theaterId, hall);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public void deleteHall(@PathVariable Long theaterId, @PathVariable Long id) {
+        hallService.deleteHall(theaterId, id);
     }
 }
