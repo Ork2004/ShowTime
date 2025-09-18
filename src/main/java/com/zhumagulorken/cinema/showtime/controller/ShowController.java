@@ -8,33 +8,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/shows")
+@RequestMapping("/movies/{movieId}/shows")
 public class ShowController {
-    private final ShowService service;
+    private final ShowService showService;
 
-    public ShowController(ShowService service) {
-        this.service = service;
+    public ShowController(ShowService showService) {
+        this.showService = showService;
     }
 
     @GetMapping
-    public List<Show> getAll() {
-        return service.getAll();
-    }
-
-    @PostMapping
-    public Show create(@RequestBody Show show) {
-        return service.create(show);
+    public List<Show> getShows(@PathVariable Long movieId) {
+        return showService.getShowsByMovie(movieId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Show> getById(@PathVariable Long id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Show getShow(@PathVariable Long movieId, @PathVariable Long id) {
+        return showService.getShowByIdAndMovie(movieId, id);
+    }
+
+    @PostMapping
+    public Show createShow(@PathVariable Long movieId, @RequestBody Show show) {
+        return showService.createShow(movieId, show);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public void delete(@PathVariable Long movieId, @PathVariable Long id) {
+        showService.deleteShow(movieId, id);
     }
 }
