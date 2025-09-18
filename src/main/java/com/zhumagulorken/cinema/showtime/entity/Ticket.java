@@ -2,12 +2,17 @@ package com.zhumagulorken.cinema.showtime.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "tickets")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "booked_at")
+    private LocalDateTime bookedAt;
 
     @ManyToOne
     @JoinColumn(name = "show_id")
@@ -29,6 +34,14 @@ public class Ticket {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LocalDateTime getBookedAt() {
+        return bookedAt;
+    }
+
+    public void setBookedAt(LocalDateTime bookedAt) {
+        this.bookedAt = bookedAt;
     }
 
     public Show getShow() {

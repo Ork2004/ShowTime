@@ -8,33 +8,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tickets")
+@RequestMapping("/users/{userId}/tickets")
 public class TicketController {
-    private final TicketService service;
+    private final TicketService ticketService;
 
-    public TicketController(TicketService service) {
-        this.service = service;
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
     }
 
     @GetMapping
-    public List<Ticket> getAll() {
-        return service.getAll();
-    }
-
-    @PostMapping
-    public Ticket create(@RequestBody Ticket ticket) {
-        return service.create(ticket);
+    public List<Ticket> getTicketsByUser(@PathVariable Long userId) {
+        return ticketService.getTicketsByUser(userId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getById(@PathVariable Long id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Ticket getTicket(@PathVariable Long userId, @PathVariable Long id) {
+        return ticketService.getTicketByIdAndUser(userId, id);
+    }
+
+    @PostMapping
+    public Ticket bookTicket(@PathVariable Long userId, @RequestBody Ticket ticket) {
+        return ticketService.bookTicket(userId, ticket);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public void cancelTicket(@PathVariable Long userId, @PathVariable Long id) {
+        ticketService.cancelTicket(userId, id);
     }
 }
