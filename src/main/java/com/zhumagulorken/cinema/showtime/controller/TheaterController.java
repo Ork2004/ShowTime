@@ -10,31 +10,31 @@ import java.util.List;
 @RestController
 @RequestMapping("/theaters")
 public class TheaterController {
-    private final TheaterService service;
+    private final TheaterService theaterService;
 
     public TheaterController(TheaterService service) {
-        this.service = service;
+        this.theaterService = service;
     }
 
     @GetMapping
     public List<Theater> getAll() {
-        return service.getAll();
+        return theaterService.getAll();
     }
 
     @PostMapping
     public Theater create(@RequestBody Theater theater) {
-        return service.create(theater);
+        return theaterService.create(theater);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Theater> getById(@PathVariable Long id) {
-        return service.getById(id)
+        return theaterService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
+        theaterService.delete(id);
     }
 }

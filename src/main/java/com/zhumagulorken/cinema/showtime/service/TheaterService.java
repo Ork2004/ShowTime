@@ -9,25 +9,25 @@ import java.util.Optional;
 
 @Service
 public class TheaterService {
-    private final TheaterRepository repository;
+    private final TheaterRepository theaterRepository;
 
     public TheaterService(TheaterRepository repository) {
-        this.repository = repository;
+        this.theaterRepository = repository;
     }
 
     public List<Theater> getAll() {
-        return repository.findAll();
+        return theaterRepository.findAll();
     }
 
     public Theater create(Theater theater) {
-        return repository.save(theater);
+        return theaterRepository.save(theater);
     }
 
     public Optional<Theater> getById(Long id) {
-        return repository.findById(id);
+        return theaterRepository.findById(id);
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        theaterRepository.deleteById(id);
     }
 }

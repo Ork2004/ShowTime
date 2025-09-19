@@ -1,6 +1,5 @@
 package com.zhumagulorken.cinema.showtime.controller;
 
-import com.zhumagulorken.cinema.showtime.entity.Hall;
 import com.zhumagulorken.cinema.showtime.entity.Movie;
 import com.zhumagulorken.cinema.showtime.service.MovieService;
 import org.springframework.http.ResponseEntity;
@@ -11,31 +10,31 @@ import java.util.List;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-    private final MovieService service;
+    private final MovieService movieService;
 
     public MovieController(MovieService service) {
-        this.service = service;
+        this.movieService = service;
     }
 
     @GetMapping
     public List<Movie> getAll() {
-        return service.getAll();
+        return movieService.getAll();
     }
 
     @PostMapping
     public Movie create(@RequestBody Movie movie) {
-        return service.create(movie);
+        return movieService.create(movie);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getById(@PathVariable Long id) {
-        return service.getById(id)
+        return movieService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
+        movieService.delete(id);
     }
 }
