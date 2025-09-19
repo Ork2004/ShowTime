@@ -10,31 +10,31 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final UserService service;
+    private final UserService userService;
 
     public UserController(UserService service) {
-        this.service = service;
+        this.userService = service;
     }
 
     @GetMapping
     public List<User> getAll() {
-        return service.getAll();
+        return userService.getAll();
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
-        return service.create(user);
+        return userService.create(user);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id) {
-        return service.getById(id)
+        return userService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
+        userService.delete(id);
     }
 }

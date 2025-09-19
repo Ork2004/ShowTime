@@ -9,25 +9,25 @@ import java.util.Optional;
 
 @Service
 public class MovieService {
-    private final MovieRepository repository;
+    private final MovieRepository movieRepository;
 
     public MovieService (MovieRepository repository) {
-        this.repository = repository;
+        this.movieRepository = repository;
     }
 
     public List<Movie> getAll() {
-        return repository.findAll();
+        return movieRepository.findAll();
     }
 
     public Movie create(Movie movie) {
-        return repository.save(movie);
+        return movieRepository.save(movie);
     }
 
     public Optional<Movie> getById(Long id) {
-        return repository.findById(id);
+        return movieRepository.findById(id);
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        movieRepository.deleteById(id);
     }
 }
