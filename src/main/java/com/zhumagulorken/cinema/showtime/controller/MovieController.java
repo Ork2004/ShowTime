@@ -17,24 +17,24 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> getAll() {
-        return movieService.getAll();
-    }
-
-    @PostMapping
-    public Movie create(@RequestBody Movie movie) {
-        return movieService.create(movie);
+    public List<Movie> getMovies() {
+        return movieService.getMovies();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getById(@PathVariable Long id) {
-        return movieService.getById(id)
+    public ResponseEntity<Movie> getMovieById(@PathVariable Long id) {
+        return movieService.getMovieById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public Movie createMovie(@RequestBody Movie movie) {
+        return movieService.createMovie(movie);
+    }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        movieService.delete(id);
+    public void deleteMovie(@PathVariable Long id) {
+        movieService.deleteMovie(id);
     }
 }

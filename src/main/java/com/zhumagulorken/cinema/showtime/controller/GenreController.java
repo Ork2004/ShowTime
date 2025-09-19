@@ -17,24 +17,24 @@ public class GenreController {
     }
 
     @GetMapping
-    public List<Genre> getAll() {
-        return genreService.getAll();
-    }
-
-    @PostMapping
-    public Genre create(@RequestBody Genre genre) {
-        return genreService.create(genre);
+    public List<Genre> getGenres() {
+        return genreService.getGenres();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Genre> getById(@PathVariable Long id) {
-        return genreService.getById(id)
+    public ResponseEntity<Genre> getGenreById(@PathVariable Long id) {
+        return genreService.getGenreById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public Genre createGenre(@RequestBody Genre genre) {
+        return genreService.createGenre(genre);
+    }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        genreService.delete(id);
+    public void deleteGenre(@PathVariable Long id) {
+        genreService.deleteGenre(id);
     }
 }

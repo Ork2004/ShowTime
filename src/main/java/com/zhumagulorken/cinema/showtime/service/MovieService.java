@@ -15,19 +15,19 @@ public class MovieService {
         this.movieRepository = repository;
     }
 
-    public List<Movie> getAll() {
+    public List<Movie> getMovies() {
         return movieRepository.findAll();
     }
 
-    public Movie create(Movie movie) {
-        return movieRepository.save(movie);
-    }
-
-    public Optional<Movie> getById(Long id) {
+    public Optional<Movie> getMovieById(Long id) {
         return movieRepository.findById(id);
     }
 
-    public void delete(Long id) {
+    public Movie createMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    public void deleteMovie(Long id) {
         movieRepository.deleteById(id);
     }
 }

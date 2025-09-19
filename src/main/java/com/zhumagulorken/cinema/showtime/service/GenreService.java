@@ -15,19 +15,19 @@ public class GenreService {
         this.genreRepository = repository;
     }
 
-    public List<Genre> getAll() {
+    public List<Genre> getGenres() {
         return genreRepository.findAll();
     }
 
-    public Genre create(Genre genre) {
-        return genreRepository.save(genre);
-    }
-
-    public Optional<Genre> getById(Long Id) {
+    public Optional<Genre> getGenreById(Long Id) {
         return genreRepository.findById(Id);
     }
 
-    public void delete(Long Id) {
+    public Genre createGenre(Genre genre) {
+        return genreRepository.save(genre);
+    }
+
+    public void deleteGenre(Long Id) {
         genreRepository.deleteById(Id);
     }
 }

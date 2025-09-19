@@ -15,19 +15,19 @@ public class TheaterService {
         this.theaterRepository = repository;
     }
 
-    public List<Theater> getAll() {
+    public List<Theater> getTheaters() {
         return theaterRepository.findAll();
     }
 
-    public Theater create(Theater theater) {
-        return theaterRepository.save(theater);
-    }
-
-    public Optional<Theater> getById(Long id) {
+    public Optional<Theater> getTheaterById(Long id) {
         return theaterRepository.findById(id);
     }
 
-    public void delete(Long id) {
+    public Theater createTheater(Theater theater) {
+        return theaterRepository.save(theater);
+    }
+
+    public void deleteTheater(Long id) {
         theaterRepository.deleteById(id);
     }
 }
