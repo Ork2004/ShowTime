@@ -1,5 +1,6 @@
 package com.zhumagulorken.cinema.showtime.service;
 
+import com.zhumagulorken.cinema.showtime.dto.UserDto;
 import com.zhumagulorken.cinema.showtime.entity.User;
 import com.zhumagulorken.cinema.showtime.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,39 @@ public class UserService {
         this.userRepository = repository;
     }
 
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public UserDto getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(this::mapToDto)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserDto createUser(UserDto dto) {
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setRole(dto.getRole() != null ? dto.getRole() : "USER");
+
+        return mapToDto(userRepository.save(user));
     }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    private UserDto mapToDto(User user) {
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getRole());
+        return dto;
     }
 }
