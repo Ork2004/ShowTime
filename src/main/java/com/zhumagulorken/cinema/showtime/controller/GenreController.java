@@ -10,31 +10,31 @@ import java.util.List;
 @RestController
 @RequestMapping("/genres")
 public class GenreController {
-    private final GenreService service;
+    private final GenreService genreService;
 
     public GenreController(GenreService service) {
-        this.service = service;
+        this.genreService = service;
     }
 
     @GetMapping
     public List<Genre> getAll() {
-        return service.getAll();
+        return genreService.getAll();
     }
 
     @PostMapping
     public Genre create(@RequestBody Genre genre) {
-        return service.create(genre);
+        return genreService.create(genre);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Genre> getById(@PathVariable Long id) {
-        return service.getById(id)
+        return genreService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
+        genreService.delete(id);
     }
 }

@@ -9,25 +9,25 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository repository) {
-        this.repository = repository;
+        this.userRepository = repository;
     }
 
     public List<User> getAll() {
-        return repository.findAll();
+        return userRepository.findAll();
     }
 
     public User create(User user) {
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     public Optional<User> getById(Long id) {
-        return repository.findById(id);
+        return userRepository.findById(id);
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        userRepository.deleteById(id);
     }
 }
