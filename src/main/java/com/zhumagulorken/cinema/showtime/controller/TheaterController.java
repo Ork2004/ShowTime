@@ -17,24 +17,24 @@ public class TheaterController {
     }
 
     @GetMapping
-    public List<Theater> getAll() {
-        return theaterService.getAll();
-    }
-
-    @PostMapping
-    public Theater create(@RequestBody Theater theater) {
-        return theaterService.create(theater);
+    public List<Theater> getTheaters() {
+        return theaterService.getTheaters();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Theater> getById(@PathVariable Long id) {
-        return theaterService.getById(id)
+    public ResponseEntity<Theater> getTheaterById(@PathVariable Long id) {
+        return theaterService.getTheaterById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public Theater createTheater(@RequestBody Theater theater) {
+        return theaterService.createTheater(theater);
+    }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        theaterService.delete(id);
+    public void deleteTheater(@PathVariable Long id) {
+        theaterService.deleteTheater(id);
     }
 }

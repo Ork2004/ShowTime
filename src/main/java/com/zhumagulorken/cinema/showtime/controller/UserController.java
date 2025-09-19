@@ -2,6 +2,7 @@ package com.zhumagulorken.cinema.showtime.controller;
 
 import com.zhumagulorken.cinema.showtime.entity.User;
 import com.zhumagulorken.cinema.showtime.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,24 +18,24 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAll() {
-        return userService.getAll();
-    }
-
-    @PostMapping
-    public User create(@RequestBody User user) {
-        return userService.create(user);
+    public List<User> getUsers() {
+        return userService.getUsers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
-        return userService.getById(id)
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        userService.delete(id);
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 }
