@@ -1,7 +1,9 @@
 package com.zhumagulorken.cinema.showtime.controller;
 
+import com.zhumagulorken.cinema.showtime.dto.TicketDto;
 import com.zhumagulorken.cinema.showtime.entity.Ticket;
 import com.zhumagulorken.cinema.showtime.service.TicketService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,22 +19,23 @@ public class TicketController {
     }
 
     @GetMapping
-    public List<Ticket> getTicketsByUser(@PathVariable Long userId) {
-        return ticketService.getTicketsByUser(userId);
+    public ResponseEntity<List<TicketDto>> getTicketsByUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(ticketService.getTicketsByUser(userId));
     }
 
     @GetMapping("/{id}")
-    public Ticket getTicket(@PathVariable Long userId, @PathVariable Long id) {
-        return ticketService.getTicketByIdAndUser(userId, id);
+    public ResponseEntity<TicketDto> getTicket(@PathVariable Long userId, @PathVariable Long id) {
+        return ResponseEntity.ok(ticketService.getTicketByIdAndUser(userId, id));
     }
 
     @PostMapping
-    public Ticket bookTicket(@PathVariable Long userId, @RequestBody Ticket ticket) {
-        return ticketService.bookTicket(userId, ticket);
+    public ResponseEntity<TicketDto> bookTicket(@PathVariable Long userId, @Valid @RequestBody TicketDto ticketDto) {
+        return ResponseEntity.ok(ticketService.bookTicket(userId, ticketDto));
     }
 
     @DeleteMapping("/{id}")
-    public void cancelTicket(@PathVariable Long userId, @PathVariable Long id) {
+    public ResponseEntity<Void> cancelTicket(@PathVariable Long userId, @PathVariable Long id) {
         ticketService.cancelTicket(userId, id);
+        return ResponseEntity.noContent().build();
     }
 }
