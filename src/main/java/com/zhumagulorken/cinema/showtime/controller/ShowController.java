@@ -2,7 +2,6 @@ package com.zhumagulorken.cinema.showtime.controller;
 
 import com.zhumagulorken.cinema.showtime.entity.Show;
 import com.zhumagulorken.cinema.showtime.service.ShowService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +16,12 @@ public class ShowController {
     }
 
     @GetMapping
-    public List<Show> getShows(@PathVariable Long movieId) {
+    public List<Show> getShowsByMovie(@PathVariable Long movieId) {
         return showService.getShowsByMovie(movieId);
     }
 
     @GetMapping("/{id}")
-    public Show getShow(@PathVariable Long movieId, @PathVariable Long id) {
+    public Show getShowByIdAndMovie(@PathVariable Long movieId, @PathVariable Long id) {
         return showService.getShowByIdAndMovie(movieId, id);
     }
 

@@ -11,8 +11,8 @@ import java.util.Optional;
 public class GenreService {
     private final GenreRepository genreRepository;
 
-    public GenreService(GenreRepository repository) {
-        this.genreRepository = repository;
+    public GenreService(GenreRepository genreRepository) {
+        this.genreRepository = genreRepository;
     }
 
     public List<Genre> getGenres() {

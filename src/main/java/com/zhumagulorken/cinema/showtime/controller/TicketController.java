@@ -1,7 +1,6 @@
 package com.zhumagulorken.cinema.showtime.controller;
 
 import com.zhumagulorken.cinema.showtime.dto.TicketDto;
-import com.zhumagulorken.cinema.showtime.entity.Ticket;
 import com.zhumagulorken.cinema.showtime.service.TicketService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TicketDto> getTicket(@PathVariable Long userId, @PathVariable Long id) {
+    public ResponseEntity<TicketDto> getTicketByIdAndUser(@PathVariable Long userId, @PathVariable Long id) {
         return ResponseEntity.ok(ticketService.getTicketByIdAndUser(userId, id));
     }
 

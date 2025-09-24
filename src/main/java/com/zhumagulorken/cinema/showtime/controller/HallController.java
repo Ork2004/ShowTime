@@ -2,7 +2,6 @@ package com.zhumagulorken.cinema.showtime.controller;
 
 import com.zhumagulorken.cinema.showtime.entity.Hall;
 import com.zhumagulorken.cinema.showtime.service.HallService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +16,12 @@ public class HallController {
     }
 
     @GetMapping
-    public List<Hall> getHalls(@PathVariable Long theaterId) {
+    public List<Hall> getHallsByTheater(@PathVariable Long theaterId) {
         return hallService.getHallsByTheater(theaterId);
     }
 
     @GetMapping("/{id}")
-    public Hall getHall(@PathVariable Long theaterId, @PathVariable Long id) {
+    public Hall getHallByIdAndTheater(@PathVariable Long theaterId, @PathVariable Long id) {
         return hallService.getHallByIdAndTheater(theaterId, id);
     }
 
