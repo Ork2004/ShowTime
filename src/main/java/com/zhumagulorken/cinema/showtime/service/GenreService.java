@@ -37,6 +37,9 @@ public class GenreService {
     }
 
     public void deleteGenre(Long id) {
+        if (!genreRepository.existsById(id)) {
+            throw new RuntimeException("Genre not found");
+        }
         genreRepository.deleteById(id);
     }
 

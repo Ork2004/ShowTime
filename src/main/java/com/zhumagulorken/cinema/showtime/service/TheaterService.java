@@ -39,6 +39,9 @@ public class TheaterService {
     }
 
     public void deleteTheater(Long id) {
+        if (!theaterRepository.existsById(id)) {
+            throw new RuntimeException("Theater not found");
+        }
         theaterRepository.deleteById(id);
     }
 
