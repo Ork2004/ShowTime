@@ -1,7 +1,10 @@
 package com.zhumagulorken.cinema.showtime.controller;
 
+import com.zhumagulorken.cinema.showtime.dto.ShowDto;
 import com.zhumagulorken.cinema.showtime.entity.Show;
 import com.zhumagulorken.cinema.showtime.service.ShowService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +19,23 @@ public class ShowController {
     }
 
     @GetMapping
-    public List<Show> getShowsByMovie(@PathVariable Long movieId) {
-        return showService.getShowsByMovie(movieId);
+    public ResponseEntity<List<ShowDto>> getShowsByMovie(@PathVariable Long movieId) {
+        return ResponseEntity.ok(showService.getShowsByMovie(movieId));
     }
 
     @GetMapping("/{id}")
-    public Show getShowByIdAndMovie(@PathVariable Long movieId, @PathVariable Long id) {
-        return showService.getShowByIdAndMovie(movieId, id);
+    public ResponseEntity<ShowDto> getShowByIdAndMovie(@PathVariable Long movieId, @PathVariable Long id) {
+        return ResponseEntity.ok(showService.getShowByIdAndMovie(movieId, id));
     }
 
     @PostMapping
-    public Show createShow(@PathVariable Long movieId, @RequestBody Show show) {
-        return showService.createShow(movieId, show);
+    public ResponseEntity<ShowDto> createShow(@PathVariable Long movieId, @Valid @RequestBody ShowDto showDto) {
+        return ResponseEntity.ok(showService.createShow(movieId, showDto));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long movieId, @PathVariable Long id) {
+    public ResponseEntity<Void> deleteShow(@PathVariable Long movieId, @PathVariable Long id) {
         showService.deleteShow(movieId, id);
+        return ResponseEntity.noContent().build();
     }
 }
