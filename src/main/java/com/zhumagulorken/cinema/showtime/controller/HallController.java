@@ -1,7 +1,10 @@
 package com.zhumagulorken.cinema.showtime.controller;
 
+import com.zhumagulorken.cinema.showtime.dto.HallDto;
 import com.zhumagulorken.cinema.showtime.entity.Hall;
 import com.zhumagulorken.cinema.showtime.service.HallService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +19,23 @@ public class HallController {
     }
 
     @GetMapping
-    public List<Hall> getHallsByTheater(@PathVariable Long theaterId) {
-        return hallService.getHallsByTheater(theaterId);
+    public ResponseEntity<List<HallDto>> getHallsByTheater(@PathVariable Long theaterId) {
+        return ResponseEntity.ok(hallService.getHallsByTheater(theaterId));
     }
 
     @GetMapping("/{id}")
-    public Hall getHallByIdAndTheater(@PathVariable Long theaterId, @PathVariable Long id) {
-        return hallService.getHallByIdAndTheater(theaterId, id);
+    public ResponseEntity<HallDto> getHallByIdAndTheater(@PathVariable Long theaterId, @PathVariable Long id) {
+        return ResponseEntity.ok(hallService.getHallByIdAndTheater(theaterId, id));
     }
 
     @PostMapping
-    public Hall createHall(@PathVariable Long theaterId, @RequestBody Hall hall) {
-        return hallService.createHall(theaterId, hall);
+    public ResponseEntity<HallDto> createHall(@PathVariable Long theaterId, @Valid @RequestBody HallDto hallDto) {
+        return ResponseEntity.ok(hallService.createHall(theaterId, hallDto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteHall(@PathVariable Long theaterId, @PathVariable Long id) {
+    public ResponseEntity<Void> deleteHall(@PathVariable Long theaterId, @PathVariable Long id) {
         hallService.deleteHall(theaterId, id);
+        return ResponseEntity.noContent().build();
     }
 }
