@@ -2,7 +2,6 @@ package com.zhumagulorken.cinema.showtime.controller;
 
 import com.zhumagulorken.cinema.showtime.entity.Seat;
 import com.zhumagulorken.cinema.showtime.service.SeatService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +16,12 @@ public class SeatController {
     }
 
     @GetMapping
-    public List<Seat> getSeats(@PathVariable Long hallId) {
+    public List<Seat> getSeatsByHall(@PathVariable Long hallId) {
         return seatService.getSeatsByHall(hallId);
     }
 
     @GetMapping("/{id}")
-    public Seat getSeat(@PathVariable Long hallId, @PathVariable Long id) {
+    public Seat getSeatByIdAndHall(@PathVariable Long hallId, @PathVariable Long id) {
         return seatService.getSeatByIdAndHall(hallId, id);
     }
 
@@ -32,7 +31,7 @@ public class SeatController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long hallId, @PathVariable Long id) {
+    public void deleteSeat(@PathVariable Long hallId, @PathVariable Long id) {
         seatService.deleteSeat(hallId, id);
     }
 }

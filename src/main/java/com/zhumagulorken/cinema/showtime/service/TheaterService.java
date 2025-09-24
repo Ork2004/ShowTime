@@ -11,8 +11,8 @@ import java.util.Optional;
 public class TheaterService {
     private final TheaterRepository theaterRepository;
 
-    public TheaterService(TheaterRepository repository) {
-        this.theaterRepository = repository;
+    public TheaterService(TheaterRepository theaterRepository) {
+        this.theaterRepository = theaterRepository;
     }
 
     public List<Theater> getTheaters() {

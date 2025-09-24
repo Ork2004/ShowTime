@@ -12,8 +12,8 @@ import java.util.List;
 public class TheaterController {
     private final TheaterService theaterService;
 
-    public TheaterController(TheaterService service) {
-        this.theaterService = service;
+    public TheaterController(TheaterService theaterService) {
+        this.theaterService = theaterService;
     }
 
     @GetMapping
