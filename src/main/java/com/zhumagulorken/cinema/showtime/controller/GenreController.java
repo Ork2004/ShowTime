@@ -12,8 +12,8 @@ import java.util.List;
 public class GenreController {
     private final GenreService genreService;
 
-    public GenreController(GenreService service) {
-        this.genreService = service;
+    public GenreController(GenreService genreService) {
+        this.genreService = genreService;
     }
 
     @GetMapping
