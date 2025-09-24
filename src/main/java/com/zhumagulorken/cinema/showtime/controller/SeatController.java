@@ -1,7 +1,10 @@
 package com.zhumagulorken.cinema.showtime.controller;
 
+import com.zhumagulorken.cinema.showtime.dto.SeatDto;
 import com.zhumagulorken.cinema.showtime.entity.Seat;
 import com.zhumagulorken.cinema.showtime.service.SeatService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,22 +19,23 @@ public class SeatController {
     }
 
     @GetMapping
-    public List<Seat> getSeatsByHall(@PathVariable Long hallId) {
-        return seatService.getSeatsByHall(hallId);
+    public ResponseEntity<List<SeatDto>> getSeatsByHall(@PathVariable Long hallId) {
+        return ResponseEntity.ok(seatService.getSeatsByHall(hallId));
     }
 
     @GetMapping("/{id}")
-    public Seat getSeatByIdAndHall(@PathVariable Long hallId, @PathVariable Long id) {
-        return seatService.getSeatByIdAndHall(hallId, id);
+    public ResponseEntity<SeatDto> getSeatByIdAndHall(@PathVariable Long hallId, @PathVariable Long id) {
+        return ResponseEntity.ok(seatService.getSeatByIdAndHall(hallId, id));
     }
 
     @PostMapping
-    public Seat createSeat(@PathVariable Long hallId, @RequestBody Seat seat) {
-        return seatService.createSeat(hallId, seat);
+    public ResponseEntity<SeatDto> createSeat(@PathVariable Long hallId, @Valid @RequestBody SeatDto seatDto) {
+        return ResponseEntity.ok(seatService.createSeat(hallId, seatDto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSeat(@PathVariable Long hallId, @PathVariable Long id) {
+    public ResponseEntity<Void> deleteSeat(@PathVariable Long hallId, @PathVariable Long id) {
         seatService.deleteSeat(hallId, id);
+        return ResponseEntity.ok().build();
     }
 }
