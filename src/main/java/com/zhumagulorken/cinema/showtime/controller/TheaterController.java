@@ -1,7 +1,9 @@
 package com.zhumagulorken.cinema.showtime.controller;
 
+import com.zhumagulorken.cinema.showtime.dto.TheaterDto;
 import com.zhumagulorken.cinema.showtime.entity.Theater;
 import com.zhumagulorken.cinema.showtime.service.TheaterService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,24 +19,23 @@ public class TheaterController {
     }
 
     @GetMapping
-    public List<Theater> getTheaters() {
-        return theaterService.getTheaters();
+    public ResponseEntity<List<TheaterDto>> getTheaters() {
+        return ResponseEntity.ok(theaterService.getTheaters());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Theater> getTheaterById(@PathVariable Long id) {
-        return theaterService.getTheaterById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<TheaterDto> getTheaterById(@PathVariable Long id) {
+        return ResponseEntity.ok(theaterService.getTheaterById(id));
     }
 
     @PostMapping
-    public Theater createTheater(@RequestBody Theater theater) {
-        return theaterService.createTheater(theater);
+    public ResponseEntity<TheaterDto> createTheater(@Valid @RequestBody TheaterDto theaterDto) {
+        return ResponseEntity.ok(theaterService.createTheater(theaterDto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTheater(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTheater(@PathVariable Long id) {
         theaterService.deleteTheater(id);
+        return ResponseEntity.noContent().build();
     }
 }
