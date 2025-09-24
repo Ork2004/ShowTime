@@ -1,39 +1,33 @@
-package com.zhumagulorken.cinema.showtime.entity;
+package com.zhumagulorken.cinema.showtime.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-@Table(name = "movies")
-public class Movie {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MovieDto {
     private Long id;
 
-    @Column(name = "title")
+    @NotBlank(message = "Title is required")
     private String title;
 
-    @Column(name = "duration")
+    @NotBlank(message = "Duration is required")
     private String duration;
 
-    @Column(name = "release_date")
+    @NotNull(message = "Release date is required")
     private LocalDate releaseDate;
 
-    @Column(name = "rating")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Rating must be >= 0.0")
+    @DecimalMax(value = "10.0", inclusive = true, message = "Rating must be <= 10.0")
     private BigDecimal rating;
 
-    @ManyToOne
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
+    @NotNull(message = "Genre ID is required")
+    private Long genreId;
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
-    private List<Show> shows =  new ArrayList<>();
-
-    // Getter and Setter
+    //Getter and Setter
 
     public Long getId() {
         return id;
@@ -75,19 +69,11 @@ public class Movie {
         this.rating = rating;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public Long getGenreId() {
+        return genreId;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
-
-    public List<Show> getShows() {
-        return shows;
-    }
-
-    public void setShows(List<Show> shows) {
-        this.shows = shows;
+    public void setGenreId(Long genreId) {
+        this.genreId = genreId;
     }
 }
