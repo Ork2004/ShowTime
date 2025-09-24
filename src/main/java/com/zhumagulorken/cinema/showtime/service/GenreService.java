@@ -1,5 +1,6 @@
 package com.zhumagulorken.cinema.showtime.service;
 
+import com.zhumagulorken.cinema.showtime.dto.GenreDto;
 import com.zhumagulorken.cinema.showtime.entity.Genre;
 import com.zhumagulorken.cinema.showtime.repository.GenreRepository;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,34 @@ public class GenreService {
         this.genreRepository = genreRepository;
     }
 
-    public List<Genre> getGenres() {
-        return genreRepository.findAll();
+    public List<GenreDto> getGenres() {
+        return genreRepository.findAll().stream()
+                .map(this::mapToDto)
+                .toList();
     }
 
-    public Optional<Genre> getGenreById(Long Id) {
-        return genreRepository.findById(Id);
+    public GenreDto getGenreById(Long id) {
+        Genre genre = genreRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Genre not found"));
+        return mapToDto(genre);
     }
 
-    public Genre createGenre(Genre genre) {
-        return genreRepository.save(genre);
+    public GenreDto createGenre(GenreDto dto) {
+        Genre genre = new Genre();
+        genre.setName(dto.getName());
+
+        Genre saved = genreRepository.save(genre);
+        return mapToDto(saved);
     }
 
-    public void deleteGenre(Long Id) {
-        genreRepository.deleteById(Id);
+    public void deleteGenre(Long id) {
+        genreRepository.deleteById(id);
+    }
+
+    private GenreDto mapToDto(Genre genre) {
+        GenreDto dto = new GenreDto();
+        dto.setId(genre.getId());
+        dto.setName(genre.getName());
+        return dto;
     }
 }
