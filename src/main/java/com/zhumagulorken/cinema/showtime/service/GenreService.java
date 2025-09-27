@@ -2,6 +2,7 @@ package com.zhumagulorken.cinema.showtime.service;
 
 import com.zhumagulorken.cinema.showtime.dto.GenreDto;
 import com.zhumagulorken.cinema.showtime.entity.Genre;
+import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.GenreRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class GenreService {
 
     public GenreDto getGenreById(Long id) {
         Genre genre = genreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Genre not found"));
+                .orElseThrow(() -> new NotFoundException(Genre.class, id));
         return mapToDto(genre);
     }
 
@@ -38,7 +39,7 @@ public class GenreService {
 
     public void deleteGenre(Long id) {
         if (!genreRepository.existsById(id)) {
-            throw new RuntimeException("Genre not found");
+            throw new NotFoundException(Genre.class, id);
         }
         genreRepository.deleteById(id);
     }

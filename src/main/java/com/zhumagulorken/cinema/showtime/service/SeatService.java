@@ -3,6 +3,7 @@ package com.zhumagulorken.cinema.showtime.service;
 import com.zhumagulorken.cinema.showtime.dto.SeatDto;
 import com.zhumagulorken.cinema.showtime.entity.Hall;
 import com.zhumagulorken.cinema.showtime.entity.Seat;
+import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.HallRepository;
 import com.zhumagulorken.cinema.showtime.repository.SeatRepository;
 import org.springframework.stereotype.Service;
@@ -29,13 +30,13 @@ public class SeatService {
 
     public SeatDto getSeatByIdAndHall(Long hallId, Long seatId) {
         Seat seat = seatRepository.findByIdAndHallId(seatId, hallId)
-                .orElseThrow(() -> new RuntimeException("Seat not found"));
+                .orElseThrow(() -> new NotFoundException(Seat.class, seatId));
         return mapToDto(seat);
     }
 
     public SeatDto createSeat(Long hallId, SeatDto dto) {
         Hall hall = hallRepository.findById(hallId)
-                .orElseThrow(() -> new RuntimeException("Hall not found"));
+                .orElseThrow(() -> new NotFoundException(Hall.class, hallId));
 
         Seat seat = new Seat();
         seat.setRowNumber(dto.getRowNumber());
@@ -47,7 +48,7 @@ public class SeatService {
 
     public void deleteSeat(Long hallId, Long seatId) {
         Seat seat = seatRepository.findByIdAndHallId(seatId, hallId)
-                .orElseThrow(() -> new RuntimeException("Seat not found"));
+                .orElseThrow(() -> new NotFoundException(Seat.class, seatId));
         seatRepository.delete(seat);
     }
 

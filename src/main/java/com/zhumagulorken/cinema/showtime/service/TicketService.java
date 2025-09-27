@@ -5,6 +5,8 @@ import com.zhumagulorken.cinema.showtime.entity.Seat;
 import com.zhumagulorken.cinema.showtime.entity.Show;
 import com.zhumagulorken.cinema.showtime.entity.Ticket;
 import com.zhumagulorken.cinema.showtime.entity.User;
+import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
+import com.zhumagulorken.cinema.showtime.exсeption.SeatAlreadyBookedException;
 import com.zhumagulorken.cinema.showtime.repository.SeatRepository;
 import com.zhumagulorken.cinema.showtime.repository.ShowRepository;
 import com.zhumagulorken.cinema.showtime.repository.TicketRepository;
@@ -39,25 +41,22 @@ public class TicketService {
 
     public TicketDto getTicketByIdAndUser(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByIdAndUserId(ticketId, userId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() -> new NotFoundException(Ticket.class, ticketId));
         return mapToDto(ticket);
     }
 
     public TicketDto bookTicket(Long userId, TicketDto dto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException(User.class, userId));
 
         Show show = showRepository.findById(dto.getShowId())
-                .orElseThrow(() -> new RuntimeException("Show not found"));
+                .orElseThrow(() -> new NotFoundException(Show.class, dto.getShowId()));
 
         Seat seat = seatRepository.findById(dto.getSeatId())
-                .orElseThrow(() -> new RuntimeException("Seat not found"));
+                .orElseThrow(() -> new NotFoundException(Seat.class, dto.getSeatId()));
 
         ticketRepository.findByShowIdAndSeatId(show.getId(), seat.getId())
-                .ifPresent(t -> { throw new RuntimeException("Seat already booked"); });
-
-        ticketRepository.findByShowIdAndSeatId(show.getId(), seat.getId())
-                .ifPresent(t -> { throw new RuntimeException("Seat already booked"); });
+                .ifPresent(t -> { throw new SeatAlreadyBookedException(show.getId(), seat.getId()); });
 
         Ticket ticket = new Ticket();
         ticket.setUser(user);
@@ -70,7 +69,7 @@ public class TicketService {
 
     public void cancelTicket(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByIdAndUserId(ticketId, userId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() -> new NotFoundException(Ticket.class, ticketId));
         ticketRepository.delete(ticket);
     }
 

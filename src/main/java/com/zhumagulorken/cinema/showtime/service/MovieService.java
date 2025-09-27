@@ -3,6 +3,7 @@ package com.zhumagulorken.cinema.showtime.service;
 import com.zhumagulorken.cinema.showtime.dto.MovieDto;
 import com.zhumagulorken.cinema.showtime.entity.Genre;
 import com.zhumagulorken.cinema.showtime.entity.Movie;
+import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.GenreRepository;
 import com.zhumagulorken.cinema.showtime.repository.MovieRepository;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,12 @@ public class MovieService {
 
     public MovieDto getMovieById(Long id) {
         Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Movie not found"));
+                .orElseThrow(() -> new NotFoundException(Movie.class, id));
         return mapToDto(movie);    }
 
     public MovieDto createMovie(MovieDto dto) {
         Genre genre = genreRepository.findById(dto.getGenreId())
-                .orElseThrow(() -> new RuntimeException("Genre not found"));
+                .orElseThrow(() -> new NotFoundException(Genre.class, dto.getGenreId()));
 
         Movie movie = new Movie();
         movie.setTitle(dto.getTitle());
@@ -47,7 +48,7 @@ public class MovieService {
 
     public void deleteMovie(Long id) {
         if (!movieRepository.existsById(id)) {
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException(Movie.class, id);
         }
         movieRepository.deleteById(id);
     }
