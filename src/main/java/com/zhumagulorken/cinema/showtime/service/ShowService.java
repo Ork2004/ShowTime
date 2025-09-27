@@ -4,6 +4,7 @@ import com.zhumagulorken.cinema.showtime.dto.ShowDto;
 import com.zhumagulorken.cinema.showtime.entity.Hall;
 import com.zhumagulorken.cinema.showtime.entity.Movie;
 import com.zhumagulorken.cinema.showtime.entity.Show;
+import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.HallRepository;
 import com.zhumagulorken.cinema.showtime.repository.MovieRepository;
 import com.zhumagulorken.cinema.showtime.repository.ShowRepository;
@@ -33,16 +34,16 @@ public class ShowService {
 
     public ShowDto getShowByIdAndMovie(Long movieId, Long showId) {
         Show show = showRepository.findByIdAndMovieId(showId, movieId)
-                .orElseThrow(() -> new RuntimeException("Show not found"));
+                .orElseThrow(() -> new NotFoundException(Show.class, showId));
         return mapToDto(show);
     }
 
     public ShowDto createShow(Long movieId, ShowDto dto) {
         Movie movie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new RuntimeException("Movie not found"));
+                .orElseThrow(() -> new NotFoundException(Movie.class, movieId));
 
         Hall hall = hallRepository.findById(dto.getHallId())
-                .orElseThrow(() -> new RuntimeException("Hall not found"));
+                .orElseThrow(() -> new NotFoundException(Hall.class, dto.getHallId()));
 
         Show show = new Show();
         show.setShowTime(dto.getShowTime());
@@ -55,7 +56,7 @@ public class ShowService {
 
     public void deleteShow(Long movieId, Long showId) {
         Show show = showRepository.findByIdAndMovieId(showId, movieId)
-                .orElseThrow(() -> new RuntimeException("Show not found"));
+                .orElseThrow(() -> new NotFoundException(Show.class, showId));
         showRepository.delete(show);
     }
 

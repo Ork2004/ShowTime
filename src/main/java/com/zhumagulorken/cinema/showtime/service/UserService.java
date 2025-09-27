@@ -2,6 +2,7 @@ package com.zhumagulorken.cinema.showtime.service;
 
 import com.zhumagulorken.cinema.showtime.dto.UserDto;
 import com.zhumagulorken.cinema.showtime.entity.User;
+import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class UserService {
     public UserDto getUserById(Long id) {
         return userRepository.findById(id)
                 .map(this::mapToDto)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException(User.class, id));
     }
 
     public UserDto createUser(UserDto dto) {
@@ -41,7 +42,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
+            throw new NotFoundException(User.class, id);
         }
         userRepository.deleteById(id);
     }

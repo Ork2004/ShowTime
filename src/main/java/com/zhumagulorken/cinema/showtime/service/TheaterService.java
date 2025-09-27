@@ -2,6 +2,7 @@ package com.zhumagulorken.cinema.showtime.service;
 
 import com.zhumagulorken.cinema.showtime.dto.TheaterDto;
 import com.zhumagulorken.cinema.showtime.entity.Theater;
+import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.TheaterRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class TheaterService {
 
     public TheaterDto getTheaterById(Long id) {
         Theater theater = theaterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Theater not found"));
+                .orElseThrow(() -> new NotFoundException(Theater.class, id));
         return mapToDto(theater);
     }
 
@@ -40,7 +41,7 @@ public class TheaterService {
 
     public void deleteTheater(Long id) {
         if (!theaterRepository.existsById(id)) {
-            throw new RuntimeException("Theater not found");
+            throw new NotFoundException(Theater.class, id);
         }
         theaterRepository.deleteById(id);
     }
