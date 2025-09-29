@@ -1,5 +1,6 @@
 package com.zhumagulorken.cinema.showtime.entity;
 
+import com.zhumagulorken.cinema.showtime.enums.Role;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role = "USER";
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Ticket> tickets =  new ArrayList<>();
@@ -61,11 +63,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
