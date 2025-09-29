@@ -2,6 +2,7 @@ package com.zhumagulorken.cinema.showtime.service;
 
 import com.zhumagulorken.cinema.showtime.dto.UserDto;
 import com.zhumagulorken.cinema.showtime.entity.User;
+import com.zhumagulorken.cinema.showtime.enums.Role;
 import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class UserService {
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
-        user.setRole(dto.getRole() != null ? dto.getRole() : "USER");
+        user.setRole(dto.getRole() != null ? dto.getRole() : Role.USER);
 
         return mapToDto(userRepository.save(user));
     }

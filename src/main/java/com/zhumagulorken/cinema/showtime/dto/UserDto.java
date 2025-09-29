@@ -1,7 +1,9 @@
 package com.zhumagulorken.cinema.showtime.dto;
 
+import com.zhumagulorken.cinema.showtime.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserDto {
@@ -18,7 +20,8 @@ public class UserDto {
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
-    private String role;
+    @NotNull
+    private Role role;
 
     //Getter and Setter
 
@@ -54,11 +57,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
