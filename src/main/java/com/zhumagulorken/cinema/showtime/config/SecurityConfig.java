@@ -30,7 +30,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints (registration, login)
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/**"
+                        ).permitAll()
+
+                        // Public endpoints (auth)
                         .requestMatchers("/auth/**").permitAll()
+
 
                         // USER-only endpoints
                         .requestMatchers("/tickets/**").hasRole("USER")
