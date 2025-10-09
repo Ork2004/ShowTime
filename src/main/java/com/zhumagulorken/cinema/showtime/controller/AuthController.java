@@ -5,6 +5,8 @@ import com.zhumagulorken.cinema.showtime.entity.User;
 import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.UserRepository;
 import com.zhumagulorken.cinema.showtime.security.jwt.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(
+        name = "Authentication",
+        description = "User registration and login with JWT"
+)
 public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -28,6 +34,10 @@ public class AuthController {
     }
 
     @PostMapping("/reqister")
+    @Operation(
+            summary = "Register a new user",
+            description = "Create a new user account. The password is automatically hashed before saving."
+    )
     public ResponseEntity<String> register(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -35,6 +45,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(
+            summary = "User login",
+            description = "Authenticate a user by email and password, returning a JWT token if credentials are valid."
+    )
     public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
         User dbUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new NotFoundException(User.class, user.getEmail()));
