@@ -31,10 +31,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints (registration, login)
                         .requestMatchers(
-                                "/swagger-ui.html",
+                                "/",
+                                "/index.html",
+                                "/css/**",
+                                "/js/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/v3/**"
+                                "/auth/**"
                         ).permitAll()
 
                         // Public endpoints (auth)
