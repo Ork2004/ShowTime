@@ -8,12 +8,10 @@ import com.zhumagulorken.cinema.showtime.repository.UserRepository;
 import com.zhumagulorken.cinema.showtime.security.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -66,4 +64,18 @@ public class AuthController {
         String token = jwtUtil.generateToken(dbUser.getEmail(), dbUser.getRole());
         return ResponseEntity.ok(Map.of("token", token));
     }
+
+    @GetMapping("/auth/validate")
+    public ResponseEntity<Map<String, String>> validateToken(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.substring(7);
+        String username = jwtUtil.extractUsername(token);
+        String role = jwtUtil.extractRole(token);
+
+        if (jwtUtil.isTokenExpired(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.ok(Map.of("username", username, "role", role));
+    }
+
 }
