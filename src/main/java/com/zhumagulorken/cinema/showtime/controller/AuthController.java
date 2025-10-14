@@ -2,6 +2,7 @@ package com.zhumagulorken.cinema.showtime.controller;
 
 import com.zhumagulorken.cinema.showtime.dto.UserDto;
 import com.zhumagulorken.cinema.showtime.entity.User;
+import com.zhumagulorken.cinema.showtime.enums.Role;
 import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.UserRepository;
 import com.zhumagulorken.cinema.showtime.security.jwt.JwtUtil;
@@ -33,13 +34,19 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/reqister")
+    @PostMapping("/register")
     @Operation(
             summary = "Register a new user",
             description = "Create a new user account. The password is automatically hashed before saving."
     )
     public ResponseEntity<String> register(@RequestBody User user) {
+        if (user.getRole() == null) {
+            user.setRole(Role.USER);
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Email already registered");
+        }
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully");
     }
