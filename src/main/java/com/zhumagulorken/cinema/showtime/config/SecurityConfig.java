@@ -36,6 +36,7 @@ public class SecurityConfig {
                                 "/about.html",
                                 "/login.html",
                                 "/register.html",
+                                "/movies.html",
                                 "/auth/**",
                                 "/css/**",
                                 "/js/**",
@@ -43,19 +44,21 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
+                        // Shared endpoints (USER + ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/movies/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/shows/**").hasAnyRole("USER", "ADMIN")
+
                         // USER-only endpoints
                         .requestMatchers("/tickets/**").hasRole("USER")
 
                         // ADMIN-only endpoints
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/movies/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
                         .requestMatchers("/shows/**").hasRole("ADMIN")
                         .requestMatchers("/halls/**").hasRole("ADMIN")
                         .requestMatchers("/seats/**").hasRole("ADMIN")
 
-                        // Shared endpoints: both USER and ADMIN can access
-                        .requestMatchers(HttpMethod.GET, "/movies/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/shows/**").hasAnyRole("USER", "ADMIN")
 
                         // All other requests require authentication
                         .anyRequest().authenticated()
