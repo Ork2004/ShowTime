@@ -65,7 +65,7 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("token", token));
     }
 
-    @GetMapping("/auth/validate")
+    @GetMapping("/validate")
     public ResponseEntity<Map<String, String>> validateToken(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         String username = jwtUtil.extractUsername(token);
