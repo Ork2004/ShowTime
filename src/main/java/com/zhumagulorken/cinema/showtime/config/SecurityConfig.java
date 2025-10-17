@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/login.html",
                                 "/register.html",
                                 "/movies.html",
+                                "/movie-details.html",
                                 "/auth/**",
                                 "/css/**",
                                 "/js/**",
