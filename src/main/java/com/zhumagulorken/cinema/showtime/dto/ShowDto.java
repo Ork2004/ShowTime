@@ -21,6 +21,8 @@ public class ShowDto {
     @NotNull(message = "Hall ID is required")
     private Long hallId;
 
+    private String hallName;
+
     //Getter and Setter
 
     public Long getId() {
@@ -61,5 +63,13 @@ public class ShowDto {
 
     public void setHallId(Long hallId) {
         this.hallId = hallId;
+    }
+
+    public String getHallName() {
+        return hallName;
+    }
+
+    public void setHallName(String hallName) {
+        this.hallName = hallName;
     }
 }
