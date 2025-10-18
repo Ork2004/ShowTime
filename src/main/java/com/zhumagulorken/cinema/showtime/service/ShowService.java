@@ -67,6 +67,7 @@ public class ShowService {
         dto.setPrice(show.getPrice());
         dto.setMovieId(show.getMovie().getId());
         dto.setHallId(show.getHall().getId());
+        dto.setHallName(show.getHall().getName());
         return dto;
     }
 }

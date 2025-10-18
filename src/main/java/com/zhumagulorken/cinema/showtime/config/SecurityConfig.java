@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 "/register.html",
                                 "/movies.html",
                                 "/movie-details.html",
+                                "/show-selection.html",
                                 "/auth/**",
                                 "/css/**",
                                 "/js/**",

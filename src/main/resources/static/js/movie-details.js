@@ -41,8 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 window.location.href = "login.html";
                 return;
             }
-            // Переход на выбор места
-            window.location.href = `select-seat.html?showId=${movieId}`;
+            window.location.href = `show-selection.html?movieId=${movieId}`;
         });
 
     } catch (err) {
