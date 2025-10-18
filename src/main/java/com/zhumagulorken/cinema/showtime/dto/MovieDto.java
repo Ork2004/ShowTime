@@ -27,6 +27,8 @@ public class MovieDto {
     @NotNull(message = "Genre ID is required")
     private Long genreId;
 
+    private String genreName;
+
     //Getter and Setter
 
     public Long getId() {
@@ -75,5 +77,13 @@ public class MovieDto {
 
     public void setGenreId(Long genreId) {
         this.genreId = genreId;
+    }
+
+    public String getGenreName() {
+        return genreName;
+    }
+
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
     }
 }

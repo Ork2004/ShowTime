@@ -61,6 +61,7 @@ public class MovieService {
         dto.setReleaseDate(movie.getReleaseDate());
         dto.setRating(movie.getRating());
         dto.setGenreId(movie.getGenre().getId());
+        dto.setGenreName(movie.getGenre().getName());
         return dto;
     }
 }

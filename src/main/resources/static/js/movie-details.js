@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <p class="text-muted mb-2"><strong>Duration:</strong> ${movie.duration}</p>
                         <p class="text-muted mb-2"><strong>Release:</strong> ${movie.releaseDate}</p>
                         <p class="text-muted mb-3"><strong>Rating:</strong> ⭐ ${movie.rating ?? "N/A"}</p>
-                        <p class="mb-3"><strong>Genre ID:</strong> ${movie.genreId}</p>
+                        <p class="mb-3"><strong>Genre:</strong> ${movie.genreName}</p>
                         <button id="bookBtn" class="btn btn-success w-100">Book Ticket</button>
                     </div>
                 </div>
