@@ -31,8 +31,15 @@ public class ShowController {
             description = "Retrieve a list of all showtimes associated with a specific movie."
     )
     public ResponseEntity<List<ShowDto>> getShowsByMovie(
-            @Parameter(description = "Movie ID", example = "1") @PathVariable Long movieId) {
-        return ResponseEntity.ok(showService.getShowsByMovie(movieId));
+            @Parameter(description = "Movie ID", example = "1") @PathVariable Long movieId,
+            @RequestParam(required = false) Long theaterId) {
+        List<ShowDto> shows = showService.getShowsByMovie(movieId);
+        if (theaterId != null) {
+            shows = shows.stream()
+                    .filter(s -> s.getTheaterId().equals(theaterId))
+                    .toList();
+        }
+        return ResponseEntity.ok(shows);
     }
 
     @GetMapping("/{id}")
