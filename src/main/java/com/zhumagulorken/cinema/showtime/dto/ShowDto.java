@@ -23,6 +23,10 @@ public class ShowDto {
 
     private String hallName;
 
+    private Long theaterId;
+
+    private String theaterName;
+
     //Getter and Setter
 
     public Long getId() {
@@ -71,5 +75,21 @@ public class ShowDto {
 
     public void setHallName(String hallName) {
         this.hallName = hallName;
+    }
+
+    public Long getTheaterId() {
+        return theaterId;
+    }
+
+    public void setTheaterId(Long theaterId) {
+        this.theaterId = theaterId;
+    }
+
+    public String getTheaterName() {
+        return theaterName;
+    }
+
+    public void setTheaterName(String theaterName) {
+        this.theaterName = theaterName;
     }
 }
