@@ -54,7 +54,7 @@ public class AuthController {
             summary = "User login",
             description = "Authenticate a user by email and password, returning a JWT token if credentials are valid."
     )
-    public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
         User dbUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new NotFoundException(User.class, user.getEmail()));
         if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
@@ -62,7 +62,12 @@ public class AuthController {
         }
 
         String token = jwtUtil.generateToken(dbUser.getEmail(), dbUser.getRole());
-        return ResponseEntity.ok(Map.of("token", token));
+        return ResponseEntity.ok(Map.of(
+                "token", token,
+                "userId", dbUser.getId(),
+                "name", dbUser.getName(),
+                "role", dbUser.getRole().name()
+        ));
     }
 
     @GetMapping("/validate")

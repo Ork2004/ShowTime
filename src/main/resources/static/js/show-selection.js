@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                     <strong>Time:</strong> ${formattedTime}<br>
                                     <strong>Price:</strong> ${show.price} ₸
                                 </p>
-                                <button class="btn btn-primary w-100" onclick="selectShow(${show.id})">Select</button>
+                                <button class="btn btn-primary w-100" onclick="selectShow(${show.id}, ${movieId})">Select</button>
                             </div>
                         </div>
                     </div>
@@ -71,6 +71,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-function selectShow(showId) {
-    window.location.href = `seat-selection.html?showId=${showId}`;
+function selectShow(showId, movieId) {
+    window.location.href = `seat-selection.html?movieId=${movieId}&showId=${showId}`;
 }

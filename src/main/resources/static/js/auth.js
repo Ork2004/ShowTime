@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const data = await res.json();
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("userId", data.userId);
                 alert("Login successful!");
                 window.location.href = "index.html";
             } catch (err) {
