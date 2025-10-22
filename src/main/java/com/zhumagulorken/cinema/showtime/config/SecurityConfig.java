@@ -49,8 +49,8 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // Shared endpoints (USER + ADMIN)
-                        .requestMatchers(HttpMethod.GET, "/movies/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/shows/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/shows/**").permitAll()
 
                         // USER-only endpoints
                         .requestMatchers("/tickets/**").hasRole("USER")
