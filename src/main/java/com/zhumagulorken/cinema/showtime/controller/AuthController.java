@@ -71,7 +71,7 @@ public class AuthController {
     }
 
     @GetMapping("/validate")
-    public ResponseEntity<Map<String, String>> validateToken(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Map<String, Object>> validateToken(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         String username = jwtUtil.extractUsername(token);
         String role = jwtUtil.extractRole(token);
@@ -80,7 +80,16 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        return ResponseEntity.ok(Map.of("username", username, "role", role));
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new NotFoundException(User.class, username));
+
+        return ResponseEntity.ok(Map.of(
+                "id", user.getId(),
+                "username", username,
+                "role", role,
+                "name", user.getName()
+        ));
     }
+
 
 }

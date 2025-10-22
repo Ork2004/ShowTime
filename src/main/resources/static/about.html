@@ -7,31 +7,35 @@
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.html">🎥 ShowTime</a>
-        <div>
+        <div class="ms-auto d-flex align-items-center">
             <a href="about.html" class="btn btn-outline-light btn-sm me-2">About</a>
             <a href="movies.html" class="btn btn-outline-light btn-sm me-2">Movies</a>
-            <a href="my-tickets.html" class="btn btn-outline-light btn-sm me-2">My Tickets</a>
+            <div id="extraLinks" class="d-inline me-2"></div>
             <div id="navButtons" class="d-inline"></div>
         </div>
     </div>
-    </div>
 </nav>
 
-<main class="container py-5">
-    <h1>About ShowTime Cinema</h1>
-    <p class="lead">ShowTime is a modern online service for purchasing cinema tickets.</p>
-    <p>You can choose a movie, reserve a seat, and pay for your ticket online.</p>
+<!-- Main -->
+<main class="container py-5 flex-grow-1">
+    <h1 class="text-center mb-4">About ShowTime Cinema</h1>
+    <p class="lead text-center mb-3">ShowTime is a modern online service for purchasing cinema tickets.</p>
+    <p class="text-center text-muted">
+        Choose your favorite movie, reserve the best seats, and enjoy a seamless booking experience from the comfort of your home.
+    </p>
 </main>
 
-<footer class="text-center py-3 bg-dark text-light">
+<!-- Footer -->
+<footer class="text-center py-3 bg-dark text-light mt-auto">
     <small>&copy; 2025 ShowTime Cinema</small>
 </footer>
-<script src = "/js/config.js"></script>
-<script src="/js/navbar.js"></script>
-<script src = "/js/auth-check.js"></script>
+
+<script type="module" src="/js/navbar.js"></script>
 </body>
 </html>

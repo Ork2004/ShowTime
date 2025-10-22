@@ -3,35 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>My Tickets — ShowTime Cinema</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="bg-light">
+<body class="d-flex flex-column min-vh-100">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.html">🎥 ShowTime</a>
-        <div>
+        <div class="ms-auto d-flex align-items-center">
             <a href="about.html" class="btn btn-outline-light btn-sm me-2">About</a>
             <a href="movies.html" class="btn btn-outline-light btn-sm me-2">Movies</a>
-            <a href="my-tickets.html" class="btn btn-outline-light btn-sm me-2">My Tickets</a>
+            <div id="extraLinks" class="d-inline me-2"></div>
             <div id="navButtons" class="d-inline"></div>
         </div>
     </div>
-    </div>
 </nav>
 
-<div class="container mt-5">
+<!-- Main -->
+<main class="container my-5 flex-grow-1">
     <h2 class="text-center mb-4">🎟️ My Tickets</h2>
     <div id="ticketsContainer" class="row justify-content-center"></div>
-</div>
+</main>
 
+<!-- Footer -->
 <footer class="text-center py-3 bg-dark text-light mt-auto">
     <small>&copy; 2025 ShowTime Cinema</small>
 </footer>
 
-<script src="/js/config.js"></script>
-<script src="/js/navbar.js"></script>
-<script src="/js/my-tickets.js"></script>
+<script type="module" src="/js/navbar.js"></script>
+<script type="module" src="/js/my-tickets.js"></script>
 </body>
 </html>

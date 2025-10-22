@@ -78,6 +78,7 @@ export async function requireRole(role) {
     const user = await requireLogin();
     if (user.role !== role.toUpperCase()) {
         alert("Access denied");
+        window.location.href = "index.html";
         throw new Error("Insufficient role");
     }
     return user;

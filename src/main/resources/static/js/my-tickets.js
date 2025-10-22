@@ -1,30 +1,14 @@
+import { API_BASE } from './config.js';
+import { requireRole } from './auth.js';
+
 document.addEventListener("DOMContentLoaded", async () => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
     const container = document.getElementById("ticketsContainer");
 
-    if (!token || !userId) {
-        window.location.href = "login.html";
-        return;
-    }
-
     try {
-        // Проверяем токен
-        const validateRes = await fetch(`${API_BASE}/auth/validate`, {
-            headers: { "Authorization": `Bearer ${token}` }
-        });
+        const user = await requireRole("USER");
 
-        if (!validateRes.ok) throw new Error("Token invalid");
-        const userData = await validateRes.json();
-
-        if (userData.role !== "USER") {
-            container.innerHTML = `<p class="text-center text-danger">Access denied. Only users can view tickets.</p>`;
-            return;
-        }
-
-        // Загружаем билеты пользователя
-        const res = await fetch(`${API_BASE}/users/${userId}/tickets`, {
-            headers: { "Authorization": `Bearer ${token}` }
+        const res = await fetch(`${API_BASE}/users/${user.id}/tickets`, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
         if (!res.ok) throw new Error("Failed to load tickets");
@@ -41,22 +25,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             const formattedTime = dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             return `
-                <div class="col-md-6 col-lg-4 mb-3">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">${ticket.movieTitle}</h5>
-                            <p class="card-text text-muted">
-                                <strong>Theater:</strong> ${ticket.theaterName}<br>
-                                <strong>Hall:</strong> ${ticket.hallName}<br>
-                                <strong>Seat:</strong> ${ticket.seatNumber}<br>
-                                <strong>Date:</strong> ${formattedDate}<br>
-                                <strong>Time:</strong> ${formattedTime}<br>
-                                <strong>Price:</strong> ${ticket.price} ₸
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            `;
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card shadow-sm h-100">
+            <div class="card-body text-center">
+              <h5 class="card-title">${ticket.movieTitle}</h5>
+              <p class="card-text text-muted">
+                <strong>Theater:</strong> ${ticket.theaterName}<br>
+                <strong>Hall:</strong> ${ticket.hallName}<br>
+                <strong>Seat:</strong> ${ticket.seatNumber}<br>
+                <strong>Date:</strong> ${formattedDate}<br>
+                <strong>Time:</strong> ${formattedTime}<br>
+                <strong>Price:</strong> ${ticket.price} ₸
+              </p>
+            </div>
+          </div>
+        </div>
+      `;
         }).join("");
 
     } catch (err) {
