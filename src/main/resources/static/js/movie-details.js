@@ -1,3 +1,5 @@
+import { API_BASE } from "./config.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
     const params = new URLSearchParams(window.location.search);
     const movieId = params.get("id");
@@ -11,9 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         const res = await fetch(`${API_BASE}/movies/${movieId}`, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
         });
 
         if (!res.ok) throw new Error("Failed to fetch movie");
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const movie = await res.json();
 
         container.innerHTML = `
-            <div class="col-md-8 mx-auto">
+            <div class="col-md-8">
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h2 class="card-title">${movie.title}</h2>
