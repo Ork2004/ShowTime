@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Select Seat — ShowTime Cinema</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="bg-light">
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Select Your Seats</h2>
-    <div id="seatContainer" class="row justify-content-center"></div>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+<!-- Header -->
+<header class="text-center py-4 bg-light shadow-sm">
+    <h2 class="fw-semibold mb-0">Select Your Seats</h2>
+    <p class="text-muted mb-0">Choose your preferred seats for the show</p>
+</header>
+
+<!-- Main -->
+<main class="container py-5 flex-grow-1">
+    <div id="seatContainer" class="row justify-content-center">
+        <p class="text-center text-muted">Loading seats...</p>
+    </div>
     <div class="text-center mt-4">
         <button id="bookBtn" class="btn btn-success w-50" disabled>Book Selected Seats</button>
     </div>
-</div>
+</main>
 
-<script src="/js/config.js"></script>
-<script src="/js/seat-selection.js"></script>
+<script type="module" src="/js/seat-selection.js"></script>
 </body>
 </html>
