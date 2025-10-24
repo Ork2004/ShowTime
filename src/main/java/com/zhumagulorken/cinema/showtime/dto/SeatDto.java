@@ -13,6 +13,8 @@ public class SeatDto {
 
     private Long hallId;
 
+    private boolean booked;
+
     //Getter and Setter
 
     public Long getId() {
@@ -45,5 +47,13 @@ public class SeatDto {
 
     public void setHallId(Long hallId) {
         this.hallId = hallId;
+    }
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
     }
 }

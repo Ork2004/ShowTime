@@ -43,23 +43,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         function renderSeats(seats) {
             container.innerHTML = `
-        <div class="col-md-8 d-flex flex-wrap justify-content-center">
-            ${seats.map(seat => {
-                const isBooked = seat.isBooked || seat.booked || seat.occupied;
+    <div class="text-center mb-3">
+        <span class="badge bg-white border text-dark me-2">⬜ Available</span>
+        <span class="badge bg-success-subtle border-success text-success me-2">🟩 Selected</span>
+        <span class="badge bg-danger-subtle border-danger text-danger me-2">🟥 Booked</span>
+    </div>
+    <div class="col-md-8 d-flex flex-wrap justify-content-center">
+        ${seats.map(seat => {
+                const isBooked = seat.booked;
+                const seatColorClass = isBooked ? 'bg-danger-subtle text-danger border-danger' : 'bg-white';
+                const cursorStyle = isBooked ? 'not-allowed' : 'pointer';
                 return `
-                    <div class="seat m-2 p-3 border rounded text-center
-                        ${isBooked ? 'bg-secondary text-light' : 'bg-white'}"
-                        style="width:60px; cursor:${isBooked ? 'not-allowed' : 'pointer'}"
-                        data-id="${seat.id}">
-                        ${seat.row ?? ''}${seat.number ?? seat.seatNumber ?? ''}
-                    </div>
-                `;
+                <div class="seat m-2 p-3 border rounded text-center ${seatColorClass}"
+                    style="width:60px; cursor:${cursorStyle}"
+                    data-id="${seat.id}">
+                    ${seat.row ?? ''}${seat.number ?? seat.seatNumber ?? ''}
+                </div>
+            `;
             }).join("")}
-        </div>
+    </div>
     `;
 
             document.querySelectorAll(".seat").forEach(seatEl => {
-                if (seatEl.classList.contains("bg-secondary")) return;
+                if (seatEl.classList.contains("bg-danger-subtle")) return;
+
                 seatEl.addEventListener("click", () => {
                     const id = seatEl.dataset.id;
                     if (selectedSeats.has(id)) {
@@ -75,6 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             });
         }
+
 
         bookBtn.addEventListener("click", async () => {
             if (selectedSeats.size === 0) {
