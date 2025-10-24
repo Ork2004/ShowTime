@@ -79,6 +79,13 @@ public class TicketService {
         dto.setShowId(ticket.getShow().getId());
         dto.setSeatId(ticket.getSeat().getId());
         dto.setBookedAt(ticket.getBookedAt());
+
+        dto.setMovieTitle(ticket.getShow().getMovie().getTitle());
+        dto.setTheaterName(ticket.getShow().getHall().getTheater().getName());
+        dto.setHallName(ticket.getShow().getHall().getName());
+        dto.setSeatNumber(ticket.getSeat().getSeatNumber());
+        dto.setShowTime(ticket.getShow().getShowTime());
+        dto.setPrice(ticket.getShow().getPrice());
         return dto;
     }
 }
