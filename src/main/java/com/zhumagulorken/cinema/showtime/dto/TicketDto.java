@@ -17,10 +17,15 @@ public class TicketDto {
     private LocalDateTime bookedAt;
 
     private String movieTitle;
+
     private String theaterName;
+
     private String hallName;
+
     private int seatNumber;
+
     private LocalDateTime showTime;
+
     private BigDecimal price;
 
     //Getter and Setter
