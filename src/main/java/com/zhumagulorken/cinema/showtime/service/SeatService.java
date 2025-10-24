@@ -6,6 +6,7 @@ import com.zhumagulorken.cinema.showtime.entity.Seat;
 import com.zhumagulorken.cinema.showtime.exсeption.NotFoundException;
 import com.zhumagulorken.cinema.showtime.repository.HallRepository;
 import com.zhumagulorken.cinema.showtime.repository.SeatRepository;
+import com.zhumagulorken.cinema.showtime.repository.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class SeatService {
     private final SeatRepository seatRepository;
     private final HallRepository hallRepository;
+    private final TicketRepository ticketRepository;
 
-    public SeatService(SeatRepository seatRepository, HallRepository hallRepository) {
+    public SeatService(SeatRepository seatRepository, HallRepository hallRepository,  TicketRepository ticketRepository) {
         this.seatRepository = seatRepository;
         this.hallRepository = hallRepository;
+        this.ticketRepository = ticketRepository;
     }
 
     public List<SeatDto> getSeatsByHall(Long hallId) {
@@ -58,6 +61,8 @@ public class SeatService {
         dto.setRowNumber(seat.getRowNumber());
         dto.setSeatNumber(seat.getSeatNumber());
         dto.setHallId(seat.getHall().getId());
+        boolean booked = ticketRepository.existsBySeatId(seat.getId());
+        dto.setBooked(booked);
         return dto;
     }
 }
