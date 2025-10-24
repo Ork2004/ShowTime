@@ -1,9 +1,11 @@
+import { API_BASE } from "./config.js";
+import { requireRole } from "./auth.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
     const params = new URLSearchParams(window.location.search);
     const movieId = params.get("movieId");
     const container = document.getElementById("showContainer");
     const theaterSelect = document.getElementById("theaterSelect");
-    const token = localStorage.getItem("token");
 
     if (!movieId) {
         container.innerHTML = `<p class="text-center text-danger">Movie ID not specified.</p>`;
@@ -11,15 +13,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
+        const user = await requireRole("USER");
+
         const res = await fetch(`${API_BASE}/movies/${movieId}/shows`, {
-            headers: { "Authorization": `Bearer ${token}` }
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` }
         });
 
         if (!res.ok) throw new Error("Failed to load shows");
-
         const shows = await res.json();
 
-        if (shows.length === 0) {
+        if (!shows.length) {
             container.innerHTML = `<p class="text-center text-muted">No shows available for this movie.</p>`;
             return;
         }
@@ -45,32 +48,36 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const formattedTime = dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                 return `
-                    <div class="col-md-6 col-lg-4 mb-3">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">${show.hallName}</h5>
-                                <p class="card-text text-muted">
-                                    <strong>Theater:</strong> ${show.theaterName}<br>
-                                    <strong>Date:</strong> ${formattedDate}<br>
-                                    <strong>Time:</strong> ${formattedTime}<br>
-                                    <strong>Price:</strong> ${show.price} ₸
-                                </p>
-                                <button class="btn btn-primary w-100" onclick="selectShow(${show.id}, ${movieId})">Select</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+          <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card shadow-sm h-100">
+              <div class="card-body text-center">
+                <h5 class="card-title">${show.hallName}</h5>
+                <p class="card-text text-muted">
+                  <strong>Theater:</strong> ${show.theaterName}<br>
+                  <strong>Date:</strong> ${formattedDate}<br>
+                  <strong>Time:</strong> ${formattedTime}<br>
+                  <strong>Price:</strong> ${show.price} ₸
+                </p>
+                <button class="btn btn-primary w-100" data-id="${show.id}">Select</button>
+              </div>
+            </div>
+          </div>
+        `;
             }).join("");
+
+            container.querySelectorAll("button[data-id]").forEach(btn => {
+                btn.addEventListener("click", () => handleSelect(btn.dataset.id));
+            });
+        }
+
+        function handleSelect(showId) {
+            window.location.href = `seat-selection.html?movieId=${movieId}&showId=${showId}`;
         }
 
         renderShows(shows);
 
     } catch (err) {
         console.error(err);
-        container.innerHTML = `<p class="text-center text-danger">Failed to load shows.</p>`;
+        container.innerHTML = `<p class="text-center text-danger">Access denied or failed to load shows.</p>`;
     }
 });
-
-function selectShow(showId, movieId) {
-    window.location.href = `seat-selection.html?movieId=${movieId}&showId=${showId}`;
-}
