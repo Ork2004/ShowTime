@@ -76,13 +76,50 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
 
-        bookBtn.addEventListener("click", () => {
+        bookBtn.addEventListener("click", async () => {
             if (selectedSeats.size === 0) {
                 alert("Please select at least one seat.");
                 return;
             }
 
-            alert(`(Demo) Selected seats: ${Array.from(selectedSeats).join(", ")}\nBooking feature coming soon.`);
+            try {
+                bookBtn.disabled = true;
+                bookBtn.textContent = "Booking...";
+
+                const bookings = [];
+
+                for (const seatId of selectedSeats) {
+                    const res = await fetch(`${API_BASE}/users/${userId}/tickets`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            showId: showId,
+                            seatId: seatId
+                        })
+                    });
+
+                    if (!res.ok) {
+                        const errText = await res.text();
+                        throw new Error(`Booking failed: ${errText}`);
+                    }
+
+                    const ticket = await res.json();
+                    bookings.push(ticket);
+                }
+
+                alert(`Booking successful!\nTickets: ${bookings.map(t => t.id).join(", ")}`);
+                window.location.href = "my-tickets.html";
+
+            } catch (err) {
+                console.error(err);
+                alert("Booking failed. Some seats may already be booked.");
+            } finally {
+                bookBtn.disabled = false;
+                bookBtn.textContent = "Book Selected Seats";
+            }
         });
 
     } catch (err) {

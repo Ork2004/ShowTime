@@ -2,6 +2,7 @@ package com.zhumagulorken.cinema.showtime.dto;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class TicketDto {
@@ -14,6 +15,13 @@ public class TicketDto {
     private Long seatId;
 
     private LocalDateTime bookedAt;
+
+    private String movieTitle;
+    private String theaterName;
+    private String hallName;
+    private int seatNumber;
+    private LocalDateTime showTime;
+    private BigDecimal price;
 
     //Getter and Setter
 
@@ -47,5 +55,53 @@ public class TicketDto {
 
     public void setBookedAt(LocalDateTime bookedAt) {
         this.bookedAt = bookedAt;
+    }
+
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public String getTheaterName() {
+        return theaterName;
+    }
+
+    public void setTheaterName(String theaterName) {
+        this.theaterName = theaterName;
+    }
+
+    public String getHallName() {
+        return hallName;
+    }
+
+    public void setHallName(String hallName) {
+        this.hallName = hallName;
+    }
+
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public LocalDateTime getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(LocalDateTime showTime) {
+        this.showTime = showTime;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
