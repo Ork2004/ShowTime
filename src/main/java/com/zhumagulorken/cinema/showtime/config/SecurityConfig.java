@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 "/register.html",
                                 "/movies.html",
                                 "/my-tickets.html",
+                                "/admin-dashboard.html",
                                 "/movie-details.html",
                                 "/show-selection.html",
                                 "/seat-selection.html",
