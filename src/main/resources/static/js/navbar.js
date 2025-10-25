@@ -15,14 +15,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const user = await requireLogin();
 
-        if (user.role === "USER") {
-            extraLinks.innerHTML = `
+        if (extraLinks) {
+            if (user.role === "USER") {
+                extraLinks.innerHTML = `
                 <a href="my-tickets.html" class="btn btn-outline-light btn-sm me-2">My Tickets</a>
             `;
-        } else if (user.role === "ADMIN") {
-            extraLinks.innerHTML = `
+            } else if (user.role === "ADMIN") {
+                extraLinks.innerHTML = `
                 <a href="admin-dashboard.html" class="btn btn-outline-light btn-sm me-2">Admin Panel</a>
             `;
+            }
         }
 
         navButtons.innerHTML = `
