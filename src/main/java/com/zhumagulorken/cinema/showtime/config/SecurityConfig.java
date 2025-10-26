@@ -60,6 +60,7 @@ public class SecurityConfig {
                         // ADMIN-only endpoints
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
                         .requestMatchers("/shows/**").hasRole("ADMIN")
                         .requestMatchers("/halls/**").hasRole("ADMIN")

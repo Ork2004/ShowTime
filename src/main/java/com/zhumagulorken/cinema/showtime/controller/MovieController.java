@@ -54,6 +54,17 @@ public class MovieController {
         return ResponseEntity.ok(movieService.createMovie(movieDto));
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update an existing movie",
+            description = "Update movie details (title, duration, release date, rating, genre) by ID"
+    )
+    public ResponseEntity<MovieDto> updateMovie(
+            @Parameter(description = "Movie ID", example = "1") @PathVariable Long id,
+            @Valid @RequestBody MovieDto movieDto) {
+        return ResponseEntity.ok(movieService.updateMovie(id, movieDto));
+    }
+
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Delete a movie",
