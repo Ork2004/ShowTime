@@ -46,6 +46,19 @@ public class MovieService {
         return mapToDto(movieRepository.save(movie));
     }
 
+    public MovieDto updateMovie(Long id, MovieDto dto) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Movie.class, id));
+        Genre genre = genreRepository.findById(dto.getGenreId())
+                .orElseThrow(() -> new NotFoundException(Genre.class, dto.getGenreId()));
+        movie.setTitle(dto.getTitle());
+        movie.setDuration(dto.getDuration());
+        movie.setReleaseDate(dto.getReleaseDate());
+        movie.setRating(dto.getRating());
+        movie.setGenre(genre);
+        return mapToDto(movieRepository.save(movie));
+    }
+
     public void deleteMovie(Long id) {
         if (!movieRepository.existsById(id)) {
             throw new NotFoundException(Movie.class, id);
