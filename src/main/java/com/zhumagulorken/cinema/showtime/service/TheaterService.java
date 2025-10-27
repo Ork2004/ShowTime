@@ -7,7 +7,6 @@ import com.zhumagulorken.cinema.showtime.repository.TheaterRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TheaterService {
@@ -37,6 +36,14 @@ public class TheaterService {
 
         Theater saved = theaterRepository.save(theater);
         return mapToDto(saved);
+    }
+
+    public TheaterDto updateTheater(Long id, TheaterDto dto) {
+        Theater theater = theaterRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Theater.class, id));
+        theater.setName(dto.getName());
+        theater.setLocation(dto.getLocation());
+        return mapToDto(theaterRepository.save(theater));
     }
 
     public void deleteTheater(Long id) {
