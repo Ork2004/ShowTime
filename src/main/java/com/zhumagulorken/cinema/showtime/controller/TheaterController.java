@@ -53,6 +53,17 @@ public class TheaterController {
         return ResponseEntity.ok(theaterService.createTheater(theaterDto));
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update an existing theater",
+            description = "Update theater details (name, location) by ID."
+    )
+    public ResponseEntity<TheaterDto> updateTheater(
+            @Parameter(description = "Theater ID", example = "1") @PathVariable Long id,
+            @Valid @RequestBody TheaterDto theaterDto) {
+        return ResponseEntity.ok(theaterService.updateTheater(id, theaterDto));
+    }
+
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Delete a theater",
