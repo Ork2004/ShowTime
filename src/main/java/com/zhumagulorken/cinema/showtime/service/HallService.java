@@ -45,6 +45,14 @@ public class HallService {
         return mapToDto(hallRepository.save(hall));
     }
 
+    public HallDto updateHall(Long theaterId, Long hallId, HallDto dto) {
+        Hall hall = hallRepository.findByIdAndTheaterId(hallId, theaterId)
+                .orElseThrow(() -> new NotFoundException(Hall.class, hallId));
+
+        hall.setName(dto.getName());
+        return mapToDto(hallRepository.save(hall));
+    }
+
     public void deleteHall(Long theaterId, Long hallId) {
         Hall hall = hallRepository.findByIdAndTheaterId(hallId, theaterId)
                 .orElseThrow(() -> new NotFoundException(Hall.class, hallId));
