@@ -57,6 +57,19 @@ public class HallController {
         return ResponseEntity.ok(hallService.createHall(theaterId, hallDto));
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update an existing hall",
+            description = "Update hall details (name) by ID within a theater."
+    )
+    public ResponseEntity<HallDto> updateHall(
+            @Parameter(description = "Theater ID", example = "1") @PathVariable Long theaterId,
+            @Parameter(description = "Hall ID", example = "10") @PathVariable Long id,
+            @Valid @RequestBody HallDto hallDto) {
+        return ResponseEntity.ok(hallService.updateHall(theaterId, id, hallDto));
+    }
+
+
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Delete a hall",
