@@ -29,47 +29,44 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
+                        // ===== PUBLIC ENDPOINTS =====
                         .requestMatchers(
-                                "/",
-                                "/index.html",
-                                "/about.html",
-                                "/login.html",
-                                "/register.html",
-                                "/movies.html",
-                                "/my-tickets.html",
-                                "/admin-dashboard.html",
-                                "/admin-movies.html",
-                                "/admin-theaters.html",
-                                "/movie-details.html",
-                                "/show-selection.html",
+                                "/", "/index.html", "/about.html",
+                                "/login.html", "/register.html",
+                                "/movies.html", "/my-tickets.html",
+                                "/admin-dashboard.html", "/admin-movies.html",
+                                "/admin-theaters.html", "/admin-halls.html",
+                                "/movie-details.html", "/show-selection.html",
                                 "/seat-selection.html",
-                                "/auth/**",
-                                "/css/**",
-                                "/js/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/auth/**", "/css/**", "/js/**",
+                                "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
 
-                        // Shared endpoints (USER + ADMIN)
+                        // ===== SHARED (USER + ADMIN) =====
                         .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/shows/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/movies/*/shows/**").permitAll()
 
-                        // USER-only endpoints
-                        .requestMatchers("/tickets/**").hasRole("USER")
+                        // ===== USER-ONLY ENDPOINTS =====
+                        .requestMatchers("/users/*/tickets/**").hasRole("USER")
 
-                        // ADMIN-only endpoints
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // ===== ADMIN-ONLY ENDPOINTS =====
+                        .requestMatchers("/theaters/**").hasRole("ADMIN")
+                        .requestMatchers("/genres/**").hasRole("ADMIN")
+
+                        // Movie management (Admin)
                         .requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
-                        .requestMatchers("/shows/**").hasRole("ADMIN")
-                        .requestMatchers("/theaters/**").hasRole("ADMIN")
-                        .requestMatchers("/halls/**").hasRole("ADMIN")
-                        .requestMatchers("/seats/**").hasRole("ADMIN")
 
+                        // Showtime management (Admin)
+                        .requestMatchers(HttpMethod.POST, "/movies/*/shows/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/movies/*/shows/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/movies/*/shows/**").hasRole("ADMIN")
 
-                        // All other requests require authentication
+                        // ===== RESTRICTED ENDPOINTS =====
+                        .requestMatchers("/users/**").denyAll()
+
+                        // ===== ALL OTHER REQUESTS =====
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
