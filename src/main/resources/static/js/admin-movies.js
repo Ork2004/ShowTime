@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function loadMovies() {
         const res = await authFetch(`${API_BASE}/movies`);
         const movies = await res.json();
+
         container.innerHTML = movies.map(m => `
             <div class="col-md-6 col-lg-4">
                 <div class="card shadow-sm h-100">
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <div class="d-flex justify-content-between">
                             <button class="btn btn-primary btn-sm edit-btn" data-id="${m.id}">✏️ Edit</button>
                             <button class="btn btn-danger btn-sm delete-btn" data-id="${m.id}">🗑️ Delete</button>
+                            <button class="btn btn-secondary btn-sm shows-btn" data-id="${m.id}">📅 Shows</button>
                         </div>
                     </div>
                 </div>
@@ -58,6 +60,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             await authFetch(`${API_BASE}/movies/${btn.dataset.id}`, { method: "DELETE" });
             loadMovies();
         }));
+
+        document.querySelectorAll(".shows-btn").forEach(btn =>
+            btn.addEventListener("click", () => {
+                window.location.href = `admin-shows.html?movieId=${btn.dataset.id}`;
+            })
+        );
     }
 
     addBtn.addEventListener("click", () => {
