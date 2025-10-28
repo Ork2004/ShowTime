@@ -57,6 +57,19 @@ public class SeatController {
         return ResponseEntity.ok(seatService.createSeat(hallId, seatDto));
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update an existing seat",
+            description = "Update seat details (rowNumber, seatNumber) by ID within a hall."
+    )
+    public ResponseEntity<SeatDto> updateSeat(
+            @Parameter(description = "Hall ID", example = "1") @PathVariable Long hallId,
+            @Parameter(description = "Seat ID", example = "10") @PathVariable Long id,
+            @Valid @RequestBody SeatDto seatDto) {
+        return ResponseEntity.ok(seatService.updateSeat(hallId, id, seatDto));
+    }
+
+
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Delete a seat",
