@@ -35,8 +35,8 @@ public class SecurityConfig {
                                 "/login.html", "/register.html",
                                 "/movies.html", "/my-tickets.html",
                                 "/admin-dashboard.html", "/admin-movies.html",
-                                "/admin-theaters.html", "/admin-halls.html",
-                                "/admin-seats.html",
+                                "/admin-shows.html", "/admin-theaters.html",
+                                "/admin-halls.html", "/admin-seats.html",
                                 "/movie-details.html", "/show-selection.html",
                                 "/seat-selection.html",
                                 "/auth/**", "/css/**", "/js/**",
@@ -46,12 +46,12 @@ public class SecurityConfig {
                         // ===== SHARED (USER + ADMIN) =====
                         .requestMatchers(HttpMethod.GET, "/movies/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/movies/*/shows/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/theaters/*/halls/*/seats/**").permitAll()
 
                         // ===== USER-ONLY ENDPOINTS =====
                         .requestMatchers("/users/*/tickets/**").hasRole("USER")
 
                         // ===== ADMIN-ONLY ENDPOINTS =====
-                        .requestMatchers("/theaters/**").hasRole("ADMIN")
                         .requestMatchers("/genres/**").hasRole("ADMIN")
 
                         // Movie management (Admin)
@@ -63,6 +63,17 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/movies/*/shows/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/movies/*/shows/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/movies/*/shows/**").hasRole("ADMIN")
+
+                        // Theater management (Admin)
+                        .requestMatchers("/theaters/**").hasRole("ADMIN")
+
+                        // Hall management (Admin)
+                        .requestMatchers("/theaters/*/halls").hasRole("ADMIN")
+
+                        // Seat management (Admin)
+                        .requestMatchers(HttpMethod.POST, "/theaters/*/halls/*/seats/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/theaters/*/halls/*/seats/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/theaters/*/halls/*/seats/**").hasRole("ADMIN")
 
                         // ===== RESTRICTED ENDPOINTS =====
                         .requestMatchers("/users/**").denyAll()
