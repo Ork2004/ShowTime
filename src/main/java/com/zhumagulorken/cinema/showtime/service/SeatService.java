@@ -49,6 +49,16 @@ public class SeatService {
         return mapToDto(seatRepository.save(seat));
     }
 
+    public SeatDto updateSeat(Long hallId, Long seatId, SeatDto dto) {
+        Seat seat = seatRepository.findByIdAndHallId(seatId, hallId)
+                .orElseThrow(() -> new NotFoundException(Seat.class, seatId));
+
+        seat.setRowNumber(dto.getRowNumber());
+        seat.setSeatNumber(dto.getSeatNumber());
+
+        return mapToDto(seatRepository.save(seat));
+    }
+
     public void deleteSeat(Long hallId, Long seatId) {
         Seat seat = seatRepository.findByIdAndHallId(seatId, hallId)
                 .orElseThrow(() -> new NotFoundException(Seat.class, seatId));
