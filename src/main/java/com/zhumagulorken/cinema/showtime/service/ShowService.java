@@ -54,6 +54,21 @@ public class ShowService {
         return mapToDto(showRepository.save(show));
     }
 
+    public ShowDto updateShow(Long movieId, Long showId, ShowDto dto) {
+        Show show = showRepository.findByIdAndMovieId(showId, movieId)
+                .orElseThrow(() -> new NotFoundException(Show.class, showId));
+
+        Hall hall = hallRepository.findById(dto.getHallId())
+                .orElseThrow(() -> new NotFoundException(Hall.class, dto.getHallId()));
+
+        show.setShowTime(dto.getShowTime());
+        show.setPrice(dto.getPrice());
+        show.setHall(hall);
+
+        return mapToDto(showRepository.save(show));
+    }
+
+
     public void deleteShow(Long movieId, Long showId) {
         Show show = showRepository.findByIdAndMovieId(showId, movieId)
                 .orElseThrow(() -> new NotFoundException(Show.class, showId));

@@ -64,6 +64,18 @@ public class ShowController {
         return ResponseEntity.ok(showService.createShow(movieId, showDto));
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update an existing show",
+            description = "Update show details (showTime, price, hall) by ID for a specific movie"
+    )
+    public ResponseEntity<ShowDto> updateShow(
+            @Parameter(description = "Movie ID", example = "1") @PathVariable Long movieId,
+            @Parameter(description = "Show ID", example = "10") @PathVariable Long id,
+            @Valid @RequestBody ShowDto showDto) {
+        return ResponseEntity.ok(showService.updateShow(movieId, id, showDto));
+    }
+
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Delete a show",
