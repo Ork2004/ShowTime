@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
 
-                        // Showtime management (Admin)
+                        // Show management (Admin)
                         .requestMatchers(HttpMethod.POST, "/movies/*/shows/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/movies/*/shows/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/movies/*/shows/**").hasRole("ADMIN")
