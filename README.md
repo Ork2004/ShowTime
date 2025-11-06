@@ -24,6 +24,19 @@ Frontend included for interacting with the API.
 - **Frontend** connected via REST API
 
 ---
+## Screenshots
+
+A quick preview of the **ShowTime** web interface.
+
+| Page            | Screenshot                                          |
+|-----------------|-----------------------------------------------------|
+| Main Page       | ![Index](docs/images/index.png)                     |
+| Login           | ![Login](docs/images/login.png)                     |
+| Admin Dashboard | ![Admin Dashboard](docs/images/admin-dashboard.png) |
+| Manage Theaters | ![Manage Theaters](docs/images/manage-theaters.png) |
+| Movie List      | ![Movie List](docs/images/movie-list.png)           |
+
+---
 
 ## Tech Stack
 
@@ -205,15 +218,15 @@ The frontend communicates with the API using **Fetch** and **JWT tokens** stored
 ## How to Run
 
 ### Prerequisites
-- Java 17+
+- Java 20
 - Maven 3+
 - PostgreSQL running on `localhost:5432`
 
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/showtime.git
-   cd showtime
+   git clone https://github.com/Ork2004/ShowTime.git
+   cd ShowTime
    ```
 
 2. Create the database:
@@ -223,7 +236,7 @@ The frontend communicates with the API using **Fetch** and **JWT tokens** stored
 
 3. (Optional) Import initial data:
    ```bash
-   psql -U postgres -d showtime_db -f db/data.sql
+   psql -U postgres -d showtime_db -f docs/data.sql
    ```
 
 4. Run the app:
