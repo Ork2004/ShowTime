@@ -1,8 +1,46 @@
-# ShowTime - Cinema REST API
+# ShowTime — Cinema Booking REST API
 
-ShowTime is a Spring Boot REST API for managing a cinema system.
-It allows you to manage movies, theaters, halls, seats, shows, and ticket bookings.
+![Java](https://img.shields.io/badge/Java-17-orange?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.5-6DB33F?logo=springboot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-database-4169E1?logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/Auth-JWT-black?logo=jsonwebtokens)
+![Swagger](https://img.shields.io/badge/API%20Docs-Swagger%20UI-85EA2D?logo=swagger&logoColor=black)
+![Maven](https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&logoColor=white)
+
+**ShowTime** is a full-stack cinema management and ticket-booking system built with **Spring Boot 3** and **PostgreSQL**. It exposes a secured REST API — with JWT authentication, role-based authorization, and layered architecture — behind a vanilla HTML/CSS/JS frontend, letting customers browse movies and book seats while admins manage the entire catalog through dedicated dashboards.
+
 ---
+
+## Table of Contents
+
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Default Accounts](#default-accounts)
+- [API Reference](#api-reference)
+- [Authorization Model](#authorization-model)
+- [Testing](#testing)
+- [Possible Improvements](#possible-improvements)
+- [Author](#author)
+
+---
+
+## Features
+
+- **Stateless JWT authentication** with BCrypt password hashing and a custom `Spring Security` filter chain
+- **Role-based authorization** (`USER` / `ADMIN`) enforced at the API layer, independent of the static frontend
+- **Ticket booking with conflict protection** — booking an already-taken seat returns `409 Conflict` instead of creating a duplicate row
+- **Full CRUD** for movies, genres, theaters, halls, seats, and shows, with filtering (e.g. shows by movie + theater)
+- **Centralized exception handling** (`@RestControllerAdvice`) producing consistent JSON error payloads for validation, not-found, and conflict cases
+- **Bean Validation** on all incoming DTOs
+- **Auto-generated OpenAPI/Swagger docs** for every endpoint
+- **Vanilla JS frontend** (no framework) using `fetch` + JWT stored in `localStorage`, including admin dashboards for movies, theaters, halls, and seats
+- **Unit + integration test suite** covering every service and controller (JUnit 5, MockMvc, Spring Security Test)
+
+---
+
 ## Screenshots
 
 | Page            | Screenshot                                          |
@@ -17,142 +55,59 @@ It allows you to manage movies, theaters, halls, seats, shows, and ticket bookin
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-------------|
-| Backend | Spring Boot 3.5.5 |
-| ORM | Hibernate (JPA) |
-| Database | PostgreSQL |
-| Security | Spring Security + JWT |
-| Documentation | Springdoc OpenAPI (Swagger UI) |
-| Build Tool | Maven |
-| Frontend | HTML, CSS, JavaScript (Fetch API) |
+| Layer          | Technology                          |
+|----------------|--------------------------------------|
+| Backend        | Java 17, Spring Boot 3.5.5           |
+| Persistence    | Spring Data JPA / Hibernate          |
+| Database       | PostgreSQL                           |
+| Security       | Spring Security, JWT (jjwt)          |
+| Validation     | Jakarta Bean Validation              |
+| Documentation  | Springdoc OpenAPI (Swagger UI)       |
+| Build Tool     | Maven                                |
+| Frontend       | HTML5, CSS3, vanilla JavaScript (Fetch API) |
+| Testing        | JUnit 5, MockMvc, Spring Security Test |
 
 ---
 
-## Default Users
+## Project Structure
 
-| Role | Email | Password |
-|------|--------|-----------|
-| Admin | `admin@example.com` | `admin123` |
-| User | `user@example.com` | `user123` |
+```
+src/main/java/.../showtime/
+├── config/          # Spring Security configuration
+├── controller/       # REST controllers (Auth, Movie, Show, Theater, Hall, Seat, Genre, Ticket, User)
+├── dto/               # Request/response DTOs
+├── entity/            # JPA entities
+├── enums/             # Role enum (USER, ADMIN)
+├── exception/         # Global exception handler + custom exceptions
+├── repository/        # Spring Data JPA repositories
+├── security/
+│   ├── jwt/           # JWT filter + token utility
+│   └── service/       # UserDetailsService implementation
+└── service/           # Business logic layer
 
----
+src/main/resources/
+├── static/            # Frontend (HTML pages, css/, js/)
+└── application.properties
 
-## API Endpoints
+docs/
+├── scheme.sql         # Database schema
+├── data.sql           # Seed data (default users, sample catalog)
+└── images/            # Screenshots used in this README
+```
 
-### Public Endpoints (No Authentication Required)
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| POST   | `/auth/register` | Register a new user |
-| POST   | `/auth/login` | Authenticate user and get JWT |
-| GET    | `/movies` | Get all movies |
-| GET    | `/movies/{id}` | Get movie by ID |
-| GET    | `/movies/{id}/shows` | Get all shows for a specific movie |
-| GET    | `/theaters/{theaterId}/halls/{hallId}/seats` | Get seat map for a hall |
-| GET    | `/swagger-ui/index.html` | Swagger UI documentation |
-| GET    | `/v3/api-docs` | OpenAPI spec |
-| GET    | `/index.html`, `/about.html`, `/login.html`, `/register.html`, etc. | Static frontend pages |
-| GET    | `/css/**`, `/js/**` | Static resources |
-
----
-
-### User Endpoints (ROLE_USER)
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| GET    | `/users/{userId}/tickets` | View all tickets booked by the user |
-| POST   | `/users/{userId}/tickets` | Book a ticket for a show |
-| DELETE | `/users/{userId}/tickets/{ticketId}` | Cancel a specific ticket |
-
+The app follows a classic layered architecture: **Controller → Service → Repository → Entity**, with DTOs decoupling the API contract from the persistence model.
 
 ---
 
-### Admin Endpoints (ROLE_ADMIN)
-
-#### Movies & Genres
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| POST   | `/movies` | Create a new movie |
-| PUT    | `/movies/{id}` | Update movie details |
-| DELETE | `/movies/{id}` | Delete a movie |
-| POST   | `/genres` | Create a new genre |
-| GET    | `/genres` | List all genres |
-| DELETE | `/genres/{id}` | Delete a genre |
-
-#### Shows
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| POST   | `/movies/{movieId}/shows` | Create a new show for a movie |
-| PUT    | `/movies/{movieId}/shows/{showId}` | Update show details |
-| DELETE | `/movies/{movieId}/shows/{showId}` | Delete a show |
-
-#### Theaters
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| GET    | `/theaters` | Get all theaters |
-| POST   | `/theaters` | Create a new theater |
-| PUT    | `/theaters/{id}` | Update theater info |
-| DELETE | `/theaters/{id}` | Delete a theater |
-
-#### Halls
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| GET    | `/theaters/{theaterId}/halls` | Get all halls for a theater |
-| POST   | `/theaters/{theaterId}/halls` | Create a new hall |
-| PUT    | `/theaters/{theaterId}/halls/{hallId}` | Update hall details |
-| DELETE | `/theaters/{theaterId}/halls/{hallId}` | Delete a hall |
-
-#### Seats
-
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| GET    | `/theaters/{theaterId}/halls/{hallId}/seats` | Get all seats in a hall |
-| POST   | `/theaters/{theaterId}/halls/{hallId}/seats` | Add a new seat |
-| PUT    | `/theaters/{theaterId}/halls/{hallId}/seats/{seatId}` | Update seat details |
-| DELETE | `/theaters/{theaterId}/halls/{hallId}/seats/{seatId}` | Delete a seat |
-
----
-
-### Restricted / Denied
-
-| Endpoint | Description |
-|-----------|-------------|
-| `/users/**` | Direct access to user data is denied (except tickets) |
-
----
-
-## Swagger Documentation
-
-**[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)**
-
----
-
-## Frontend
-
-The frontend (HTML + JS) is located in the `src/main/resources/static/` folder.  
-It includes pages for:
-- Login / Registration  
-- Movie list and details  
-- Seat selection and ticket booking  
-- Admin dashboards for managing content  
-
-The frontend communicates with the API using **Fetch** and **JWT tokens** stored in `localStorage`.
-
----
-
-## How to Run
+## Getting Started
 
 ### Prerequisites
-- Java 20
+- Java 17+
 - Maven 3+
-- PostgreSQL running on `localhost:5432`
+- PostgreSQL running locally (or reachable via network)
 
-### Steps
+### Setup
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/Ork2004/ShowTime.git
@@ -164,21 +119,98 @@ The frontend communicates with the API using **Fetch** and **JWT tokens** stored
    CREATE DATABASE showtime_db;
    ```
 
-3. Import initial data:
+3. Load the schema and seed data:
    ```bash
+   psql -U postgres -d showtime_db -f docs/scheme.sql
    psql -U postgres -d showtime_db -f docs/data.sql
    ```
 
-4. Run the app:
+4. Configure the connection in `src/main/resources/application.properties`, or override the defaults via environment variables (recommended, especially for the DB password and JWT secret):
    ```bash
-   mvn spring-boot:run
+   export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/showtime_db
+   export SPRING_DATASOURCE_USERNAME=postgres
+   export SPRING_DATASOURCE_PASSWORD=your_password
+   export JWT_SECRET=your_own_secret
    ```
 
-5. Open in browser:  
-   `http://localhost:8080`
+5. Run the application:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+
+6. Open in your browser:
+   - Frontend: `http://localhost:8080`
+   - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+
+---
+
+## Default Accounts
+
+Seeded via `docs/data.sql`:
+
+| Role  | Email                | Password  |
+|-------|-----------------------|-----------|
+| Admin | `admin@example.com`  | `admin123` |
+| User  | `user@example.com`   | `user123`  |
+
+---
+
+## API Reference
+
+Full interactive documentation is available via **[Swagger UI](http://localhost:8080/swagger-ui/index.html)** once the app is running. Highlights:
+
+| Method | Endpoint                                       | Access      | Description                          |
+|--------|-------------------------------------------------|-------------|---------------------------------------|
+| POST   | `/auth/register`                                | Public      | Register a new user                   |
+| POST   | `/auth/login`                                   | Public      | Authenticate and receive a JWT        |
+| GET    | `/movies`, `/movies/{id}`                       | Public      | Browse movies                         |
+| GET    | `/movies/{id}/shows`                            | Public      | List showtimes for a movie            |
+| GET    | `/theaters/{id}/halls/{id}/seats`                | Public      | View the seat map of a hall           |
+| GET/POST/DELETE | `/users/{userId}/tickets`               | User        | View, book, and cancel tickets        |
+| POST/PUT/DELETE | `/movies`, `/movies/{id}`               | Admin       | Manage movies                         |
+| CRUD   | `/genres`                                       | Admin       | Manage genres                         |
+| CRUD   | `/theaters`, `.../halls`, `.../seats`           | Admin       | Manage theaters, halls, and seats     |
+| POST/PUT/DELETE | `/movies/{id}/shows`                    | Admin       | Manage showtimes                      |
+
+---
+
+## Authorization Model
+
+Access is enforced with Spring Security using a stateless JWT filter chain:
+
+- **Public** — auth endpoints, static frontend pages, Swagger, and read-only browsing (movies, shows, seat maps)
+- **`ROLE_USER`** — book, view, and cancel their own tickets (`/users/{userId}/tickets/**`)
+- **`ROLE_ADMIN`** — full catalog management: genres, movies, shows, theaters, halls, and seats
+- **Denied** — direct access to `/users/**` (listing/creating/deleting user accounts) is blocked for everyone; user records are only ever exposed through `/auth/**` and the ticket endpoints
+
+> Note: admin HTML pages (e.g. `admin-dashboard.html`) are served publicly so the SPA can load — actual data access is still gated by the JWT + role checks on the underlying API calls.
+
+---
+
+## Testing
+
+Run the full suite with:
+
+```bash
+./mvnw test
+```
+
+The project includes:
+- **Unit tests** for every service class (business logic, mocked repositories)
+- **Integration tests** for every controller (`@SpringBootTest` + `MockMvc`, covering auth, validation, and error responses)
+
+---
+
+## Possible Improvements
+
+- Move secrets (JWT key, DB credentials) out of `application.properties` and into environment-specific config/secret management
+- Add refresh tokens and token revocation
+- Add pagination for movie/show listings
+- Containerize with Docker Compose (app + PostgreSQL) for one-command startup
 
 ---
 
 ## Author
-**Orken Zhumagul**  
-[Email](mailto:zhumagul.orken@gmail.com) | [GitHub](https://github.com/Ork2004)
+
+**Orken Zhumagul**
+[Email](mailto:zhumagul.orken@gmail.com) · [GitHub](https://github.com/Ork2004)
