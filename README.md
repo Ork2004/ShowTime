@@ -6,6 +6,7 @@
 ![JWT](https://img.shields.io/badge/Auth-JWT-black?logo=jsonwebtokens)
 ![Swagger](https://img.shields.io/badge/API%20Docs-Swagger%20UI-85EA2D?logo=swagger&logoColor=black)
 ![Maven](https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&logoColor=white)
+[![CI](https://github.com/Ork2004/ShowTime/actions/workflows/ci.yml/badge.svg)](https://github.com/Ork2004/ShowTime/actions/workflows/ci.yml)
 
 **ShowTime** is a full-stack cinema management and ticket-booking system built with **Spring Boot 3** and **PostgreSQL**. It exposes a secured REST API — with JWT authentication, role-based authorization, and layered architecture — behind a vanilla HTML/CSS/JS frontend, letting customers browse movies and book seats while admins manage the entire catalog through dedicated dashboards.
 
@@ -101,12 +102,32 @@ The app follows a classic layered architecture: **Controller → Service → Rep
 
 ## Getting Started
 
-### Prerequisites
+### Option A: Docker Compose (recommended)
+
+Requires Docker only — no local Java, Maven, or PostgreSQL needed.
+
+```bash
+git clone https://github.com/Ork2004/ShowTime.git
+cd ShowTime
+cp .env.example .env   # then edit DB_PASSWORD and JWT_SECRET
+docker compose up --build
+```
+
+The app starts on `http://localhost:8080` against a PostgreSQL container. Load the schema/seed data into it once it's up:
+
+```bash
+docker compose exec -T db psql -U postgres -d showtime_db < docs/scheme.sql
+docker compose exec -T db psql -U postgres -d showtime_db < docs/data.sql
+```
+
+### Option B: Local Maven
+
+**Prerequisites**
 - Java 17+
 - Maven 3+
 - PostgreSQL running locally (or reachable via network)
 
-### Setup
+**Setup**
 
 1. Clone the repository:
    ```bash
@@ -125,12 +146,12 @@ The app follows a classic layered architecture: **Controller → Service → Rep
    psql -U postgres -d showtime_db -f docs/data.sql
    ```
 
-4. Configure the connection in `src/main/resources/application.properties`, or override the defaults via environment variables (recommended, especially for the DB password and JWT secret):
+4. `DB_PASSWORD` and `JWT_SECRET` have no default and must be set, or the app won't start:
    ```bash
-   export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/showtime_db
-   export SPRING_DATASOURCE_USERNAME=postgres
-   export SPRING_DATASOURCE_PASSWORD=your_password
-   export JWT_SECRET=your_own_secret
+   export DB_URL=jdbc:postgresql://localhost:5432/showtime_db
+   export DB_USERNAME=postgres
+   export DB_PASSWORD=your_password
+   export JWT_SECRET=your_own_secret   # e.g. output of: openssl rand -hex 64
    ```
 
 5. Run the application:
@@ -203,10 +224,9 @@ The project includes:
 
 ## Possible Improvements
 
-- Move secrets (JWT key, DB credentials) out of `application.properties` and into environment-specific config/secret management
 - Add refresh tokens and token revocation
 - Add pagination for movie/show listings
-- Containerize with Docker Compose (app + PostgreSQL) for one-command startup
+- Deploy a live demo (Railway/Render/Fly.io)
 
 ---
 
